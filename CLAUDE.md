@@ -7,7 +7,7 @@ Mo's homelab — a k3s cluster on Raspberry Pis with self-hosted services.
 | Device | Role (target) | Notes |
 |--------|--------------|-------|
 | Raspberry Pi 5 Model B Rev 1.1 | k3s server (control plane) | hostname: `jellypi`, 8GB RAM, Debian Bookworm, 1TB LUKS-encrypted SSD at `/mnt/media` |
-| Raspberry Pi 4 | k3s agent (worker) | hostname: `cherrypi`, currently running Pi-hole |
+| Raspberry Pi 4 | k3s agent (worker) | hostname: `cherrypi`, Raspberry Pi OS Lite 64-bit (Debian Trixie), currently running Pi-hole |
 | Raspberry Pi Zero | TBD — not part of cluster | ARMv6, too weak for k3s |
 
 ## Services

@@ -4,6 +4,7 @@
 
 - Python 3 installed on your machine
 - SSH access to the target hosts
+- Target nodes flashed with Raspberry Pi OS Lite 64-bit (Debian Trixie)
 
 ## Setup
 
