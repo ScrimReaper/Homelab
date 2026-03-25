@@ -7,7 +7,7 @@ Personal homelab running a k3s cluster on Raspberry Pis.
 | Device | Hostname | Role | Specs |
 |--------|----------|------|-------|
 | Raspberry Pi 5 Model B Rev 1.1 | `jellypi` | k3s server (control plane) | ARM Cortex-A76, 64-bit, 8GB RAM, Debian Bookworm |
-| Raspberry Pi 4 | TBD | k3s agent (worker) | ARM Cortex-A72, 64-bit |
+| Raspberry Pi 4 | `cherrypi` | k3s agent (worker) | ARM Cortex-A72, 64-bit |
 | Raspberry Pi Zero | TBD | Not part of cluster | ARMv6, 512MB RAM |
 
 ### Pi 5 Storage
