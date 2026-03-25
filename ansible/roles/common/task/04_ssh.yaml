@@ -1,0 +1,97 @@
+---
+- name: Hardening - Remove small Diffie-Hellman moduli
+  ansible.builtin.shell: >
+    awk '$5 >= 3071' /etc/ssh/moduli > /etc/ssh/moduli.tmp && diff /etc/ssh/moduli.tmp /etc/ssh/moduli
+  register: common_moduli_diff
+  failed_when: common_moduli_diff.rc not in [ 0, 1 ]
+  changed_when: common_moduli_diff.rc == 1
+
+- name: Move new short moduli file
+  ansible.builtin.shell: >
+    mv /etc/ssh/moduli.tmp /etc/ssh/moduli
+  when: common_moduli_diff.rc != 0
+  notify:
+    - reload ssh
+
+# Supported HostKey algorithms by order of preference.
+- name: Configure HostKey algorithms via SSH
+  ansible.builtin.blockinfile:
+    path: /etc/ssh/sshd_config
+    append_newline: true
+    prepend_newline: true
+    block: |
+      HostKey /etc/ssh/ssh_host_ed25519_key
+      HostKey /etc/ssh/ssh_host_rsa_key
+      HostKey /etc/ssh/ssh_host_ecdsa_key
+  notify:
+    - reload ssh
+
+# KexAlgorithms
+- name: Configure KexAlgorithms via SSH
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: ^KexAlgorithms
+    line: KexAlgorithms curve25519-sha256@libssh.org,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256
+    state: present
+  notify:
+    - reload ssh
+
+# Ciphers
+- name: Configure Ciphers via SSH
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: ^Ciphers
+    line: Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+    state: present
+  notify:
+    - reload ssh
+
+# MACs
+- name: Configure MACs via SSH
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: ^MACs
+    line: MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
+    state: present
+  notify:
+    - reload ssh
+
+# LogLevel
+- name: Configure LogLevel via SSH
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: ^LogLevel
+    line: LogLevel VERBOSE
+    state: present
+  notify:
+    - reload ssh
+
+# AuthenticationMethods
+- name: Configure AuthenticationMethods via SSH
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: ^AuthenticationMethods
+    line: AuthenticationMethods publickey
+    state: present
+  notify:
+    - reload ssh
+
+# PermitRootLogin no
+- name: Configure root login via SSH
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: ^PermitRootLogin
+    line: PermitRootLogin {{ common_set_ssh_root_login }}
+    state: "{{ 'present' if common_set_ssh_root_login is defined else 'absent' }}"
+  notify:
+    - reload ssh
+
+# PasswordAuthentication no
+- name: Configure password authentication via SSH
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: ^PasswordAuthentication
+    line: PasswordAuthentication {{ 'no' if common_disable_ssh_password_authentication else 'yes' }}
+    state: present
+  notify:
+    - reload ssh

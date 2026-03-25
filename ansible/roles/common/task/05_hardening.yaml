@@ -1,0 +1,24 @@
+---
+# https://www.bsi.bund.de/DE/Themen/Unternehmen-und-Organisationen/Cyber-Sicherheitslage/Reaktion/CERT-Bund/CERT-Bund-Reports/HowTo/Offene-Portmapper-Dienste/Offene-Portmapper-Dienste_node.html
+- name: Remediate Open Portmapper Services (BSI Recommendation)
+  block:
+    - name: Stop and disable rpcbind service and socket
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        state: stopped
+        enabled: false
+        masked: true # Prevents the service from being started by other services
+      loop:
+        - rpcbind.service
+        - rpcbind.socket
+
+    - name: Ensure rpcbind package is removed (Optional/Stronger)
+      ansible.builtin.package:
+        name: rpcbind
+        state: absent
+      when: rpcbind_uninstall | default(false)
+
+  rescue:
+    - name: Log failure to disable rpcbind
+      ansible.builtin.debug:
+        msg: "Failed to disable rpcbind. Ensure you have the necessary permissions."
