@@ -1,0 +1,6 @@
+
+
+pubkey_directory: "pub_keys/"
+
+pubkeys:
+ - mo@homelab_arch.pub
