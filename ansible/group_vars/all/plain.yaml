@@ -1,6 +1,17 @@
-
-
 pubkey_directory: "pub_keys/"
 
 pubkeys:
- - mo@homelab_arch.pub
+  - mo@homelab_arch.pub
+
+common_set_ssh_root_login: "no"
+common_disable_ssh_password_authentication: true
+
+common_users:
+  - name: mo
+    uid: 25000
+    password: "$6$tcdfCnt96V2vw63P$MhpqrRpqcDQtxfTNSy.vKQki6qK.mKhLZrlK4IE/RR7vdV2q1Rg6KUyD5GrZWoZg7Qud8LOYLYKBxMOGAy4Pv."
+    groups:
+      - wheel
+      - sudo
+    keys:
+      - mo@homelab_arch.pub
