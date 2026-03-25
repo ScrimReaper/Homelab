@@ -1,0 +1,6 @@
+---
+- ansible.builtin.import_tasks: "01_base.yaml"
+- ansible.builtin.import_tasks: "02_users.yaml"
+- ansible.builtin.import_tasks: "03_package.yaml"
+- ansible.builtin.import_tasks: "04_ssh.yaml"
+- ansible.builtin.import_tasks: "05_hardening.yaml"
