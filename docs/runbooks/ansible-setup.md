@@ -10,15 +10,11 @@
 ```bash
 cd ansible/
 
-# create and activate venv
-python -m venv venv
+# create venv, install ansible and collections
+./setup-ansible-environment.sh
+
+# activate venv in your shell (must be done manually — script activation doesn't carry over)
 source venv/bin/activate
-
-# install ansible
-pip install -r requirements.txt
-
-# install ansible collections
-ansible-galaxy collection install -r requirements.yml
 ```
 
 ## Bootstrap a new node
