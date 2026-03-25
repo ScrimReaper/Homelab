@@ -49,7 +49,11 @@ Personal homelab running a k3s cluster on Raspberry Pis.
 
 ## Docs
 
+### ADRs
 - [ADR-001 — k3s over full Kubernetes](docs/adr/001-k3s.md)
 - [ADR-002 — Immich storage: physical SSD attachment](docs/adr/002-immich-storage.md)
 - [ADR-003 — Dedicated NAS for cluster storage](docs/adr/003-nas-storage.md)
 - [ADR-004 — IaC tooling: Ansible + Helm + FluxCD](docs/adr/004-iac-tooling.md)
+
+### Runbooks
+- [Ansible setup](docs/runbooks/ansible-setup.md)
