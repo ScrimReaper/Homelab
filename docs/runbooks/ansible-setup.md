@@ -23,7 +23,7 @@ source venv/bin/activate
 The bootstrap playbook connects as `root` (first run on a fresh OS install) and sets up the `ansible` user with SSH key access and passwordless sudo.
 
 ```bash
-ansible-playbook pb_boostrap.yaml --ask-pass
+ansible-playbook pb_boostrap.yaml --limit <hostname> --ask-pass
 ```
 
 After the bootstrap the `ansible` user is in place and subsequent playbooks run without a password prompt.
