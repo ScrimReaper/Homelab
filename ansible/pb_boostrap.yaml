@@ -1,0 +1,7 @@
+- name: Prepare for ansible
+  hosts: all
+  vars:
+    ansible_user: root
+    ansible_become: false
+  roles:
+    - bootstrap
