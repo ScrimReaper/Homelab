@@ -1,0 +1,10 @@
+all:
+  children:
+    k3s_server:
+      hosts:
+        jellypi:
+          ansible_host: # TODO: set IP
+          ansible_user: pi
+    k3s_agent:
+      hosts:
+        # TODO: add Pi 4 once hostname/IP is known
