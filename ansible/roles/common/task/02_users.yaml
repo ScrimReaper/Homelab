@@ -3,6 +3,16 @@
   ansible.builtin.getent:
     database: group
 
+# Remove default users that should not exist on managed nodes
+- name: Remove unwanted users
+  ansible.builtin.user:
+    name: "{{ item }}"
+    state: absent
+    remove: true
+  loop: "{{ common_users_absent | default([]) }}"
+  loop_control:
+    label: "{{ item }}"
+
 # Create User and Group
 
 - name: Realize Groups
