@@ -6,6 +6,10 @@ pubkeys:
 common_set_ssh_root_login: "no"
 common_disable_ssh_password_authentication: true
 
+common_users_absent:
+  - admin
+  - pi
+
 common_users:
   - name: mo
     uid: 25000
