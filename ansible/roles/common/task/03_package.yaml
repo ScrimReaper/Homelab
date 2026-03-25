@@ -1,0 +1,34 @@
+---
+- name: install common tools
+  ansible.builtin.package:
+    name:
+      - curl
+      - dnsutils
+      - git
+      - ripgrep
+      - vim-nox
+    state: present
+
+# https://www.brendangregg.com/blog/2024-03-24/linux-crisis-tools.html
+- name: install crisis tools
+  ansible.builtin.package:
+    name:
+      - htop
+      - iotop
+      - iperf3
+      - procps
+      - sysstat
+      - iproute2
+      - tcpdump
+      - trace-cmd
+      - nicstat
+      - ethtool
+      - tiptop
+      - cpuid
+      - msr-tools
+    state: present
+
+- name: set default editor to vim.nox
+  community.general.alternatives:
+    name: editor
+    path: /usr/bin/vim.nox

@@ -1,0 +1,11 @@
+---
+- name: Install base tools
+  ansible.builtin.package:
+    name:
+      - util-linux-extra
+      - cron
+    state: present
+
+- name: Set timezone
+  community.general.timezone:
+    name: Europe/Vienna

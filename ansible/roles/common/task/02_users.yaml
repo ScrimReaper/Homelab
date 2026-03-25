@@ -1,0 +1,61 @@
+---
+- name: Determine available groups
+  ansible.builtin.getent:
+    database: group
+
+# Create User and Group
+
+- name: Realize Groups
+  ansible.builtin.group:
+    name: "{{ item.name }}"
+    gid: "{{ item.uid }}"
+  loop: "{{ common_users | default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Realize Users and set Groups
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    uid: "{{ item.uid }}"
+    group: "{{ item.name }}"
+    comment: "{{ item.comment | default('') }}"
+    groups: "{{ item.groups | default([]) | intersect(ansible_facts.getent_group) }}"
+    shell: /bin/bash
+    password: "{{ item.password | default('!') }}"
+  loop: "{{ common_users | default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+# authorized_key with exclusive: true removes any keys not in our list.
+# To avoid subelements iterating one key at a time (which would wipe the previous
+# key on each iteration), we first build a dict of {username: all_keys_joined}
+# in a single set_fact per user, then apply the full key string in one shot.
+- name: Build authorized keys per user
+  ansible.builtin.set_fact:
+    user_authorized_keys: >-
+      {{ user_authorized_keys | default({}) | combine({
+        item.name: query('file', item.keys | map('regex_replace', '^', pubkey_directory) | list) | join('\n')
+      }) }}
+  loop: "{{ common_users | default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Realize Authorized Keys for users
+  ansible.posix.authorized_key:
+    user: "{{ item.name }}"
+    key: "{{ user_authorized_keys[item.name] }}"
+    state: present
+    exclusive: true
+  loop: "{{ common_users | default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: not ansible_check_mode
+
+- name: Set Primary Group of Homedirs (in case gids changed)
+  ansible.builtin.file:
+    dest: /home/{{ item.name }}
+    group: "{{ item.name }}"
+  loop: "{{ common_users | default([]) }}"
+  loop_control:
+    label: /home/{{ item.name }}
+  when: not ansible_check_mode
