@@ -1,0 +1,38 @@
+---
+- name: ansible group
+  ansible.builtin.group:
+    name: ansible
+    gid: 20000
+    state: present
+
+- name: ansible user
+  ansible.builtin.user:
+    name: ansible
+    comment: Ansible Automation User
+    uid: 15000
+    group: ansible
+    state: present
+    shell: /bin/bash
+
+- name: Set up authorized keys for ansible
+  ansible.posix.authorized_key:
+    user: ansible
+    key: "{{ lookup('file', pubkey_directory + item) }}"
+    state: present
+    exclusive: true
+  loop: "{{ pubkeys }}"
+
+- name: ensure sudo exists and update cache
+  ansible.builtin.package:
+    name: sudo
+    state: present
+    update_cache: true
+
+- name: Passwordless Sudo
+  ansible.builtin.copy:
+    dest: /etc/sudoers.d/ansible
+    content: "ansible ALL=(ALL) NOPASSWD: ALL"
+    owner: root
+    group: root
+    mode: "0440"
+    validate: visudo -csf %s
