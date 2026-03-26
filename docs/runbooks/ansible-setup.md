@@ -20,10 +20,20 @@ source venv/bin/activate
 
 ## Bootstrap a new node
 
-The bootstrap playbook connects as `root` (first run on a fresh OS install) and sets up the `ansible` user with SSH key access and passwordless sudo.
+The bootstrap playbook connects as `admin` (the default user on Raspberry Pi OS) and sets up the `ansible` user with SSH key access and passwordless sudo.
 
 ```bash
 ansible-playbook pb_boostrap.yaml --limit <hostname> --ask-pass
 ```
 
 After the bootstrap the `ansible` user is in place and subsequent playbooks run without a password prompt.
+
+## Apply common configuration
+
+The common playbook configures users, packages, SSH hardening, and security remediations on all nodes.
+
+```bash
+ansible-playbook pb_common.yaml --limit <hostname>
+```
+
+Run this after bootstrapping a new node, and whenever the common role changes.
