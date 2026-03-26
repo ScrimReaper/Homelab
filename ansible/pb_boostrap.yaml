@@ -2,6 +2,6 @@
   hosts: all
   vars:
     ansible_user: admin
-    ansible_become: false
+    ansible_become: true
   roles:
     - bootstrap
