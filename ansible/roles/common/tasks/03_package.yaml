@@ -23,10 +23,16 @@
       - trace-cmd
       - nicstat
       - ethtool
+    state: present
+
+- name: install x86-only crisis tools
+  ansible.builtin.package:
+    name:
       - tiptop
       - cpuid
       - msr-tools
     state: present
+  when: ansible_facts['architecture'] == 'x86_64'
 
 - name: set default editor to vim.nox
   community.general.alternatives:
