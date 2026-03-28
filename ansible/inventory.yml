@@ -6,7 +6,8 @@ all:
       ansible_host: "192.168.0.212"
   children:
     crypto:
-      cherrypi:
+      hosts:
+        jellypi:
     # Required inventory setup for https://github.com/k3s-io/k3s-ansible
     k3s_cluster:
       children:

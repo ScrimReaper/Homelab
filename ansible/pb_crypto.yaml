@@ -1,0 +1,5 @@
+- name: Configure encrypted disks
+  hosts: crypto
+  become: true
+  roles:
+    - crypto

@@ -1,0 +1,33 @@
+---
+- name: Ensure cryptsetup is installed
+  ansible.builtin.package:
+    name: cryptsetup
+    state: present
+
+- name: Ensure mountingpoint exists
+  ansible.builtin.file:
+    path: /media/sandisk
+    state: directory
+    mode: "0755"
+
+- name: Check if luks device exists
+  ansible.builtin.stat:
+    path: /dev/disk/by-uuid/{{ luks_device_uuid }}
+  register: luks_device
+
+- name: Configure LUKS
+  when: luks_device.stat.exists
+  block:
+    - name: Open LUKS container
+      community.crypto.luks_device:
+        uuid: "{{ luks_device_uuid }}"
+        name: sandisk
+        passphrase: "{{ luks_passphrase }}"
+        state: opened
+
+    - name: Mount LUKS volume
+      ansible.builtin.mount:
+        path: /media/sandisk
+        src: /dev/mapper/sandisk
+        fstype: ext4
+        state: mounted
