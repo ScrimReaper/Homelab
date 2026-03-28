@@ -5,7 +5,7 @@ all:
     k3s_server:
       hosts:
         jellypi:
-          ansible_host: "192.168.0.20"
+          ansible_host: "192.168.0.17"
     k3s_agent:
       hosts:
         cherrypi:
