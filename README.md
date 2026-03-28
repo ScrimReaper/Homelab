@@ -6,7 +6,7 @@ Personal homelab running a k3s cluster on Raspberry Pis.
 
 | Device | Hostname | Role | Specs |
 |--------|----------|------|-------|
-| Raspberry Pi 5 Model B Rev 1.1 | `jellypi` | k3s server (control plane) | ARM Cortex-A76, 64-bit, 8GB RAM, Debian Bookworm |
+| Raspberry Pi 5 Model B Rev 1.1 | `jellypi` | k3s server (control plane) | ARM Cortex-A76, 64-bit, 8GB RAM, Debian Trixie |
 | Raspberry Pi 4 | `cherrypi` | k3s agent (worker) | ARM Cortex-A72, 64-bit, Raspberry Pi OS Lite 64-bit (Debian Trixie) |
 | Raspberry Pi Zero | TBD | Not part of cluster | ARMv6, 512MB RAM |
 
@@ -31,6 +31,7 @@ Personal homelab running a k3s cluster on Raspberry Pis.
 - [ ] Set up k3s cluster (Pi 5 as server, Pi 4 as agent)
 - [ ] Migrate all services into the cluster
 - [ ] Expose services to the internet
+- [ ] Migrate LUKS unlock to Tang/NBDE (network-bound, requires VPN)
 - [ ] Immich storage migration (1TB photo library)
 
 ## Repository Structure
