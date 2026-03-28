@@ -1,1 +1,3 @@
 venv/
+
+.vault_secret.txt
