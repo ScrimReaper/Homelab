@@ -26,3 +26,21 @@
     - name: Log failure to disable rpcbind
       ansible.builtin.debug:
         msg: "Failed to disable rpcbind. Ensure you have the necessary permissions."
+- name: Setup UFW
+  block:
+    - name: install UFW
+      ansible.builtin.package:
+        name: ufw
+        state: present
+        update_cache: true
+
+    - name: Configure ufw
+      community.general.ufw:
+        rule: allow
+        name: OpenSSH
+
+    - name: UFW - Enable and deny by default
+      community.general.ufw:
+        state: enabled
+        default: deny
+
