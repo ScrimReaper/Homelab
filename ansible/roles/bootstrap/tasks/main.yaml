@@ -1,22 +1,22 @@
 ---
 - name: ansible group
   ansible.builtin.group:
-    name: ansible
+    name: "{{ automation_user }}"
     gid: 20000
     state: present
 
 - name: ansible user
   ansible.builtin.user:
-    name: ansible
+    name: "{{ automation_user }}"
     comment: Ansible Automation User
     uid: 15000
-    group: ansible
+    group: "{{ automation_user }}"
     state: present
     shell: /bin/bash
 
 - name: Set up authorized keys for ansible
   ansible.posix.authorized_key:
-    user: ansible
+    user: "{{ automation_user }}"
     key: "{{ lookup('file', pubkey_directory + item) }}"
     state: present
     exclusive: true
@@ -30,8 +30,8 @@
 
 - name: Passwordless Sudo
   ansible.builtin.copy:
-    dest: /etc/sudoers.d/ansible
-    content: "ansible ALL=(ALL) NOPASSWD: ALL"
+    dest: /etc/sudoers.d/{{ automation_user }}
+    content: "{{ automation_user }} ALL=(ALL) NOPASSWD: ALL"
     owner: root
     group: root
     mode: "0440"
