@@ -1,0 +1,17 @@
+---
+# Bootstrapping
+
+- name: Prepare all for ansible
+  hosts: all
+  become: true
+  roles:
+    - bootstrap
+
+- name: Include common playbook
+  import_playbook: pb_common.yaml
+
+- name: Include crypto playbook
+  import_playbook: pb_crypto.yaml
+
+- name: Include k3s playbook
+  import_playbook: pb_k3s.yaml

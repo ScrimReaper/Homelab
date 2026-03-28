@@ -1,12 +1,75 @@
 all:
-  vars:
-    ansible_user: ansible
+  hosts:
+    jellypi:
+      ansible_host: "192.168.0.17"
+    cherrypi:
+      ansible_host: "192.168.0.212"
   children:
-    k3s_server:
-      hosts:
-        jellypi:
-          ansible_host: "192.168.0.17"
-    k3s_agent:
-      hosts:
-        cherrypi:
-          ansible_host: "192.168.0.212"
+    crypto:
+      cherrypi:
+    # Required inventory setup for https://github.com/k3s-io/k3s-ansible
+    k3s_cluster:
+      children:
+        server:
+          hosts:
+            jellypi:
+        agent:
+          hosts:
+            cherrypi:
+    # Required Vars
+  vars:
+    ansible_port: 22
+    ansible_user: ansible
+
+    # automation_user exists since ansible_user is instable at bootstrap, should be the same as ansible_user
+    automation_user: ansible
+
+    k3s_version: v1.31.12+k3s1
+
+    # The token should be a random string of reasonable length. You can generate
+    # one with the following commands:
+    # - openssl rand -base64 64
+    # - pwgen -s 64 1
+    # You can use ansible-vault to encrypt this value / keep it secret.
+    # Or you can omit it if not using Vagrant and let the first server automatically generate one.
+    token: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      33613730326136633937366335653363333833646430623035336433633437306637643235386532
+      3961653034353732613862646663633137643538643432370a353965663962353935626537366364
+      39303931666539636334656430393539393831376538613164383735613962326233633864643061
+      3765383461303338370a346339633163623934646634323664636262666264353133316535656635
+      65653038666438313463363230363139366463646138393634313833343562663865373333343662
+      39336137353066663736613530393531346236326162623936646436376530353135633735613836
+      63316266616564623365386565383761303339356634313731313665653362326535353130303664
+      31383162353561616164626664656132323239353364386463336564336239623130663765336130
+      3530
+    api_endpoint: "{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}"
+
+    # Optional vars
+    # extra_server_args: ""
+    # extra_agent_args: ""
+    # extra_install_envs: { 'INSTALL_K3S_SKIP_SELINUX_RPM': 'true' }
+    # cluster_context: k3s-ansible
+    # api_port: 6443
+    # k3s_server_location: /var/lib/rancher/k3s
+    # systemd_dir: /etc/systemd/system
+    # extra_service_envs: [ 'ENV_VAR1=VALUE1', 'ENV_VAR2=VALUE2' ]
+    # user_kubectl: true, by default kubectl is symlinked and configured for use by ansible_user. Set to false to only kubectl via root user.
+
+    # Manifests or Airgap should be either full paths or relative to the playbook directory.
+    # List of locally available manifests to apply to the cluster, useful for PVCs or Traefik modifications.
+    # extra_manifests: [ '/path/to/manifest1.yaml', '/path/to/manifest2.yaml' ]
+    # airgap_dir: /tmp/k3s-airgap-images
+
+    # server_config_yaml:  |
+    #   This is now an inner yaml file. Maintain the indentation.
+    #   YAML here will be placed as the content of /etc/rancher/k3s/config.yaml
+    #   See https://docs.k3s.io/installation/configuration#configuration-file
+    # agent_config_yaml:  |
+    #   Same as server_config_yaml, but for the agent nodes.
+    #   YAML here will be placed as the content of /etc/rancher/k3s/config.yaml
+    #   See https://docs.k3s.io/installation/configuration#configuration-file
+    # registries_config_yaml:  |
+    #   Containerd can be configured to connect to private registries and use them to pull images as needed by the kubelet.
+    #   YAML here will be placed as the content of /etc/rancher/k3s/registries.yaml
+    #   See https://docs.k3s.io/installation/private-registry
