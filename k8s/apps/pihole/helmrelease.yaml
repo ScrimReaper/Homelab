@@ -28,7 +28,10 @@ spec:
       customSettings:
         - dhcp-range=192.168.0.2,192.168.0.150,12h
         - dhcp-option=3,192.168.0.1
+        - dhcp-leasefile=/etc/pihole/dnsmasq.leases
       staticDhcpEntries:
         - dhcp-host=2C:CF:67:AB:9A:C0,192.168.0.17,jellypi
         - dhcp-host=2C:CF:67:81:BC:FB,192.168.0.47,cherrypi
         - dhcp-host=04:7c:16:cd:b4:73,192.168.0.27,archlinux
+    persistentVolumeClaim:
+      enabled: true
