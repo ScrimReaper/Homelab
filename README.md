@@ -22,17 +22,20 @@ Personal homelab running a k3s cluster on Raspberry Pis.
 | Service | Status | Notes |
 |---------|--------|-------|
 | Jellyfin | Running on Pi 5 | To be migrated into cluster |
-| Pi-hole | Running on Pi 4 | To be migrated into cluster |
+| Pi-hole | Running in cluster on cherrypi | DNS + DHCP, hostNetwork mode |
 | Immich | Running on main PC | Migration pending — needs storage strategy for 1TB photo library |
 | Torrenting stack | Planned | qBittorrent + Sonarr + Radarr + Prowlarr |
 
 ## Goals
 
-- [ ] Set up k3s cluster (Pi 5 as server, Pi 4 as agent)
-- [ ] Migrate all services into the cluster
-- [ ] Expose services to the internet
+- [x] Set up k3s cluster (Pi 5 as server, Pi 4 as agent)
+- [x] Set up Flux GitOps
+- [x] Deploy MetalLB, Traefik, Pi-hole
+- [ ] Migrate Jellyfin into cluster
+- [ ] Migrate Immich into cluster (needs storage strategy for 1TB photo library)
+- [ ] Set up NFS shared storage from jellypi's SSD
+- [ ] Expose services to the internet (Cloudflare Tunnel)
 - [ ] Migrate LUKS unlock to Tang/NBDE (network-bound, requires VPN)
-- [ ] Immich storage migration (1TB photo library)
 
 ## Repository Structure
 
@@ -55,6 +58,10 @@ Personal homelab running a k3s cluster on Raspberry Pis.
 - [ADR-002 — Immich storage: physical SSD attachment](docs/adr/002-immich-storage.md)
 - [ADR-003 — Dedicated NAS for cluster storage](docs/adr/003-nas-storage.md)
 - [ADR-004 — IaC tooling: Ansible + Helm + FluxCD](docs/adr/004-iac-tooling.md)
+- [ADR-005 — Flux repository structure and secret management](docs/adr/005-gitops-structure.md)
+- [ADR-006 — Bare-metal networking and storage strategy](docs/adr/006-networking-storage.md)
 
 ### Runbooks
 - [Ansible setup](docs/runbooks/ansible-setup.md)
+- [Flux GitOps setup](docs/runbooks/flux-setup.md)
+- [Gotchas](docs/runbooks/gotchas.md)
