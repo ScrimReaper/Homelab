@@ -50,6 +50,20 @@ To generate a new token:
 ansible-vault encrypt_string "$(openssl rand -base64 64)" --name 'token'
 ```
 
+### Known issue: vault-encrypted token broken in k3s-ansible 1.2.0
+
+k3s-ansible 1.2.0 (PR #509) replaced Jinja2 templates with `to_nice_yaml` to write `/etc/rancher/k3s/config.yaml`. Ansible's `to_nice_yaml` serializes `AnsibleVaultEncryptedUnicode` objects back as `!vault |` ciphertext rather than decrypting them. k3s then uses the raw ciphertext string as its cluster secret, which breaks the cluster when the config is regenerated (e.g. on version upgrade).
+
+**Workaround:** `requirements.yml` is pinned to `version: 1.1.1`. Do not upgrade to `main`/`1.2.0` until the upstream fix lands.
+
+**Fix direction:** In `k3s_server/tasks/main.yml`, the token must be coerced to a plain string before being passed to `combine()`, e.g.:
+```yaml
+token_str: "{{ token | string }}"
+k3s_server_config: "{{ k3s_server_config | combine({'token': token_str}) }}"
+```
+
+Upstream issue: https://github.com/k3s-io/k3s-ansible/issues (pending)
+
 ## LUKS encrypted disk
 
 The `pb_crypto.yaml` playbook (included in `pb_main.yaml`) opens and mounts the LUKS-encrypted disk on hosts in the `crypto` group. The passphrase is vault-encrypted in `host_vars/`.

@@ -25,7 +25,7 @@ all:
     # automation_user exists since ansible_user is instable at bootstrap, should be the same as ansible_user
     automation_user: ansible
 
-    k3s_version: v1.31.12+k3s1
+    k3s_version: v1.34.6+k3s1
 
     # The token should be a random string of reasonable length. You can generate
     # one with the following commands:
@@ -47,7 +47,8 @@ all:
     api_endpoint: "{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}"
 
     # Optional vars
-    # extra_server_args: ""
+    # Disables servicelb, we use MetalLB instead
+    extra_server_args: "--disable servicelb"
     # extra_agent_args: ""
     # extra_install_envs: { 'INSTALL_K3S_SKIP_SELINUX_RPM': 'true' }
     # cluster_context: k3s-ansible
