@@ -15,7 +15,7 @@ Mo's homelab — a k3s cluster on Raspberry Pis with self-hosted services.
 | Service | Target | Current Status |
 |---------|--------|----------------|
 | Jellyfin | k3s cluster | Running on Pi 5, local-only |
-| Pi-hole | k3s cluster | Running on Pi 4, local-only |
+| Pi-hole | k3s cluster | Running in cluster on cherrypi (hostNetwork), DNS + DHCP |
 | Immich | k3s cluster | Running on main PC (1TB SSD for photos) — migration pending |
 | Torrenting stack | k3s cluster | Planned (qBittorrent + Sonarr + Radarr + Prowlarr) |
 
@@ -34,6 +34,17 @@ Mo's homelab — a k3s cluster on Raspberry Pis with self-hosted services.
 - **Storage**: Immich migration requires a plan for the 1TB photo library currently on main PC
 - **LUKS unlock**: vault passphrase for now; migrate to Tang/NBDE once a VPN is set up between nodes
 - **UFW on k3s nodes**: UFW is intentionally skipped on k3s nodes — the `common` role gates the UFW block with `when: inventory_hostname not in groups['k3s_cluster']`. k3s nodes are on a private LAN and services are exposed via Cluster-internal mechanisms, so host-level firewalling adds complexity without benefit.
+
+## Goals (Infrastructure)
+
+- [x] Set up Flux GitOps
+- [x] Deploy MetalLB
+- [x] Deploy Traefik ingress controller
+- [x] Deploy Pi-hole (DNS + DHCP on cherrypi)
+- [ ] Configure static IPs for Pi-hole hosts (jellypi, cherrypi) via Ansible — currently set manually via nmcli, needs to be codified
+- [ ] Set up NFS shared storage from jellypi's 1TB SSD — local-path PVCs are node-bound and painful to manage
+- [ ] Migrate Pi-hole PVC to NFS once storage is set up
+- [ ] Expose Traefik externally via Cloudflare Tunnel
 
 ## Known Issues / Tech Debt
 
