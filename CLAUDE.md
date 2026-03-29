@@ -33,10 +33,11 @@ Mo's homelab — a k3s cluster on Raspberry Pis with self-hosted services.
 - **Internet exposure strategy**: TBD (candidates: Cloudflare Tunnel, Tailscale, port forwarding + DDNS)
 - **Storage**: Immich migration requires a plan for the 1TB photo library currently on main PC
 - **LUKS unlock**: vault passphrase for now; migrate to Tang/NBDE once a VPN is set up between nodes
+- **UFW on k3s nodes**: UFW is intentionally skipped on k3s nodes — the `common` role gates the UFW block with `when: inventory_hostname not in groups['k3s_cluster']`. k3s nodes are on a private LAN and services are exposed via Cluster-internal mechanisms, so host-level firewalling adds complexity without benefit.
 
 ## Known Issues / Tech Debt
 
-- **UFW conflicts with k3s**: The UFW hardening in the common role blocks k3s inter-node ports. Needs refactoring to either exclude k3s nodes from UFW or open the required ports (6443, 8472/udp, 10250, 51820-51821/udp) before enabling UFW.
+- **k3s-ansible 1.2.0 breaks vault-encrypted `token`**: PR #509 in k3s-ansible replaced Jinja2 templates with `to_nice_yaml` for writing `/etc/rancher/k3s/config.yaml`. This causes `AnsibleVaultEncryptedUnicode` objects to be serialized as `!vault |` ciphertext instead of being decrypted, so k3s uses the raw ciphertext as its cluster secret. Pinned to `1.1.1` in `requirements.yml` as workaround. Upstream issue + fix pending — see `docs/runbooks/ansible-setup.md`.
 
 ## Conventions
 
