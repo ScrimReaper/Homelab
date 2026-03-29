@@ -17,3 +17,19 @@ spec:
   values:
     service:
       type: ClusterIP
+    api:
+      dashboard: true
+      insecure: false
+    ingressRoute:
+      dashboard:
+        enabled: true
+        middlewares:
+          - name: dashboard-auth
+    extraObjects:
+      - apiVersion: traefik.io/v1alpha1
+        kind: Middleware
+        metadata:
+          name: dashboard-auth
+        spec:
+          basicAuth:
+            secret: dashboard-auth-secret
