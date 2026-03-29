@@ -1,0 +1,32 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: pihole
+  namespace: pihole
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: pihole
+      version: ">=2.35.0"
+      sourceRef:
+        kind: HelmRepository
+        name: pihole
+        namespace: flux-system
+      interval: 24h
+  values:
+    serviceDns:
+      type: LoadBalancer
+      loadBalancerIP: 192.168.0.201
+    serviceWeb:
+      type: ClusterIP
+    admin:
+      existingSecret: pihole-secret
+    dnsmasq:
+      customSettings:
+        - dhcp-range=192.168.0.2,192.168.0.150,12h
+        - dhcp-option=3,192.168.0.1
+      staticDhcpEntries:
+        - dhcp-host=2C:CF:67:AB:9A:C0,192.168.0.17,jellypi
+        - dhcp-host=2C:CF:67:81:BC:FB,192.168.0.47,cherrypi
+        - dhcp-host=04:7c:16:cd:b4:73,192.168.0.27,archlinux
