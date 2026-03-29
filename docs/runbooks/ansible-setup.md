@@ -38,7 +38,7 @@ After this, the `ansible` user is in place and no password prompt is needed goin
 ansible-playbook pb_main.yaml --limit <hostname>
 ```
 
-> **Warning:** The common role includes UFW hardening which conflicts with k3s networking (k3s requires open inter-node ports that UFW blocks). Do not run `pb_common.yaml` independently on k3s nodes until this is refactored.
+> **Note:** The common role skips UFW on k3s nodes. The UFW block in `roles/common/tasks/05_hardening.yaml` is gated with `when: inventory_hostname not in groups['k3s_cluster']`, so any host in the `k3s_cluster` group (or its children) will not have UFW installed or enabled.
 
 ## k3s cluster
 

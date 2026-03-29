@@ -27,6 +27,7 @@
       ansible.builtin.debug:
         msg: "Failed to disable rpcbind. Ensure you have the necessary permissions."
 - name: Setup UFW
+  when: inventory_hostname not in groups['k3s_cluster']
   block:
     - name: install UFW
       ansible.builtin.package:
