@@ -24,11 +24,12 @@ spec:
     DNS2: "8.8.8.8"
     admin:
       existingSecret: pihole-secret
+    extraEnvVars:
+      FTLCONF_dhcp_active: "true"
+      FTLCONF_dhcp_start: "192.168.0.2"
+      FTLCONF_dhcp_end: "192.168.0.150"
+      FTLCONF_dhcp_router: "192.168.0.1"
     dnsmasq:
-      customSettings:
-        - dhcp-range=192.168.0.2,192.168.0.150,12h
-        - dhcp-option=3,192.168.0.1
-        - dhcp-leasefile=/etc/pihole/dnsmasq.leases
       staticDhcpEntries:
         - dhcp-host=2C:CF:67:AB:9A:C0,192.168.0.17,jellypi
         - dhcp-host=2C:CF:67:81:BC:FB,192.168.0.47,cherrypi
