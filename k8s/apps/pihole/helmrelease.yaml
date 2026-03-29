@@ -35,3 +35,6 @@ spec:
         - dhcp-host=04:7c:16:cd:b4:73,192.168.0.27,archlinux
     persistentVolumeClaim:
       enabled: true
+    capabilities:
+      add:
+        - NET_ADMIN
