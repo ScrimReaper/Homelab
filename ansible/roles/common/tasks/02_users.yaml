@@ -9,6 +9,7 @@
     name: "{{ item }}"
     state: absent
     remove: true
+    force: true
   loop: "{{ common_users_absent | default([]) }}"
   loop_control:
     label: "{{ item }}"
