@@ -24,7 +24,7 @@ Mo's homelab — a k3s cluster on Raspberry Pis with self-hosted services.
 
 - [x] Set up k3s cluster (Pi 5 as server, Pi 4 as agent)
 - [ ] Migrate Jellyfin into cluster
-- [ ] Migrate Pi-hole into cluster
+- [ ] Migrate Pi-hole to blueberrypi (dedicated hardware, see ADR-007)
 - [ ] Migrate Immich into cluster (needs storage strategy for 1TB photo library)
 - [ ] Deploy torrenting stack (qBittorrent, Sonarr, Radarr, Prowlarr)
 - [ ] Expose services to the internet
@@ -42,10 +42,9 @@ Mo's homelab — a k3s cluster on Raspberry Pis with self-hosted services.
 - [x] Set up Flux GitOps
 - [x] Deploy MetalLB
 - [x] Deploy Traefik ingress controller
-- [x] Deploy Pi-hole (DNS + DHCP on cherrypi)
-- [ ] Configure static IPs for Pi-hole hosts (jellypi, cherrypi) via Ansible — currently set manually via nmcli, needs to be codified
+- [x] Deploy Pi-hole (DNS + DHCP on cherrypi) — interim state, migration to blueberrypi pending
+- [x] Configure static IPs for cluster nodes via Ansible (jellypi, cherrypi, blueberrypi)
 - [ ] Set up NFS shared storage from jellypi's 1TB SSD — local-path PVCs are node-bound and painful to manage
-- [ ] Migrate Pi-hole PVC to NFS once storage is set up
 - [ ] Expose Traefik externally via Cloudflare Tunnel
 
 ## Known Issues / Tech Debt
