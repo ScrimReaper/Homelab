@@ -3,6 +3,8 @@
 **Date:** 2026-03-29
 **Status:** Decided (storage partially pending)
 
+> **Note:** The Pi-hole sections of this ADR have been superseded by [ADR-007](007-pihole-dedicated-hardware.md). Running Pi-hole inside the cluster proved operationally painful — DHCP broadcasts, hostNetwork coupling, and Tailscale DNS complexity made it impractical. Pi-hole has been moved to dedicated hardware (blueberrypi) outside the cluster.
+
 ## Context
 
 Running Kubernetes on bare metal means no cloud load balancer and no networked storage out of the box. We need solutions for both.
