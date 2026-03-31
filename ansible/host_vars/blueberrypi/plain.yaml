@@ -1,0 +1,2 @@
+connection_type: "wifi"
+pihole_pwhash: $BALLOON-SHA256$v=1$s=1024,t=32$sL2as8lYqgfeiIIMqFdVpA==$zI7Kn2+ws267DYpk3D4uQX1RX4VUXfxIkMKV045YmnY=

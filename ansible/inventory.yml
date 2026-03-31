@@ -21,7 +21,15 @@ all:
         agent:
           hosts:
             cherrypi:
-    # Required Vars
+    # Hosts from my local home network
+    static_ip:
+      children:
+        network_manager:
+          hosts:
+            jellypi:
+            cherrypi:
+            blueberrypi:
+  # Required Vars
   vars:
     ansible_port: 22
     ansible_user: ansible
@@ -49,7 +57,6 @@ all:
       31383162353561616164626664656132323239353364386463336564336239623130663765336130
       3530
     api_endpoint: "{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}"
-
     # Optional vars
     # Disables servicelb, we use MetalLB instead
     extra_server_args: "--disable servicelb"
