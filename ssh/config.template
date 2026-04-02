@@ -7,3 +7,8 @@ Host cherrypi
     HostName 192.168.0.47
     User {{USER}}
     IdentityFile ~/.ssh/id_homelab
+
+Host argonath
+    HostName 89.127.233.64
+    User {{USER}}
+    IdentityFile ~/.ssh/id_homelab
