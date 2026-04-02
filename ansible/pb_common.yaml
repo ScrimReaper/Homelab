@@ -4,16 +4,3 @@
   roles:
     - common
 
-- name: Apply static IP to hosts that need it
-  hosts: static_ip
-  become: true
-  tasks:
-    - name: Set static IP via nmcli (NetworkManager hosts)
-      community.general.nmcli:
-        conn_name: "{{ connection_name }}"
-        type: "{{ connection_type }}"
-        ip4: "{{ ansible_host }}/24"
-        gw4: "{{ gateway }}"
-        method4: manual
-        state: present
-      when: inventory_hostname in groups['network_manager']

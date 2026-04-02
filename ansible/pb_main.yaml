@@ -10,6 +10,9 @@
 - name: Include common playbook
   import_playbook: pb_common.yaml
 
+- name: Include network playbook
+  import_playbook: pb_network.yaml
+
 - name: Include crypto playbook
   import_playbook: pb_crypto.yaml
 

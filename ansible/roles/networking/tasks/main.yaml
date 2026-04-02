@@ -1,0 +1,14 @@
+- name: Apply static IP to hosts that need it
+  become: true
+  when: inventory_hostname in groups['static_ip']
+  block:
+    - name: Set static IP via nmcli (NetworkManager hosts)
+      when: inventory_hostname in groups['network_manager']
+      community.general.nmcli:
+        conn_name: "{{ connection_name }}"
+        type: "{{ connection_type }}"
+        ip4: "{{ ansible_host }}/24"
+        gw4: "{{ gateway }}"
+        ssid: "{{ connection_ssid | default(omit) }}"
+        method4: manual
+        state: present

@@ -1,0 +1,4 @@
+- name: Apply network configuration
+  hosts: networking
+  roles:
+    - networking
