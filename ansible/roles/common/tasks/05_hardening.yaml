@@ -40,8 +40,13 @@
         rule: allow
         name: OpenSSH
 
+    - name: Allow extra ports via ufw_enable
+      community.general.ufw:
+        rule: allow
+        port: "{{ item | string }}"
+      loop: "{{ ufw_enable | default([]) }}"
+
     - name: UFW - Enable and deny by default
       community.general.ufw:
         state: enabled
         default: deny
-
