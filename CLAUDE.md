@@ -9,6 +9,7 @@ Mo's homelab — a k3s cluster on Raspberry Pis with self-hosted services.
 | Raspberry Pi 5 Model B Rev 1.1 | k3s server (control plane) | hostname: `jellypi`, 8GB RAM, Debian Trixie, 1TB LUKS-encrypted SSD at `/mnt/media` |
 | Raspberry Pi 4 | k3s agent (worker) | hostname: `cherrypi`, Raspberry Pi OS Lite 64-bit (Debian Trixie), currently running Pi-hole |
 | Raspberry Pi Zero | TBD — not part of cluster | ARMv6, too weak for k3s |
+| VPS (1984 Hosting) | VPN entry/exit node | hostname: `argonath`, 1 vCPU, 2GB RAM, 50GB SSD, Debian, hosted at 1984hosting.com |
 
 ## Services
 
@@ -31,6 +32,7 @@ Mo's homelab — a k3s cluster on Raspberry Pis with self-hosted services.
 ## Architecture Decisions
 
 - **Internet exposure strategy**: TBD (candidates: Cloudflare Tunnel, Tailscale, port forwarding + DDNS)
+- **VPN cluster**: argonath (VPS on 1984 Hosting) will serve as the entry/exit node — ADR pending
 - **Storage**: Immich migration requires a plan for the 1TB photo library currently on main PC
 - **LUKS unlock**: vault passphrase for now; migrate to Tang/NBDE once a VPN is set up between nodes
 - **UFW on k3s nodes**: UFW is intentionally skipped on k3s nodes — the `common` role gates the UFW block with `when: inventory_hostname not in groups['k3s_cluster']`. k3s nodes are on a private LAN and services are exposed via Cluster-internal mechanisms, so host-level firewalling adds complexity without benefit.

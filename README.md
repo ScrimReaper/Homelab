@@ -9,6 +9,7 @@ Personal homelab running a k3s cluster on Raspberry Pis.
 | Raspberry Pi 5 Model B Rev 1.1 | `jellypi` | k3s server (control plane) | ARM Cortex-A76, 64-bit, 8GB RAM, Debian Trixie |
 | Raspberry Pi 4 | `cherrypi` | k3s agent (worker) | ARM Cortex-A72, 64-bit, Raspberry Pi OS Lite 64-bit (Debian Trixie) |
 | Raspberry Pi Zero | TBD | Not part of cluster | ARMv6, 512MB RAM |
+| VPS (1984 Hosting) | `argonath` | VPN entry/exit node | 1 vCPU, 2GB RAM, 50GB SSD, Debian |
 
 ### Pi 5 Storage
 
@@ -36,6 +37,7 @@ Personal homelab running a k3s cluster on Raspberry Pis.
 - [ ] Set up NFS shared storage from jellypi's SSD
 - [ ] Expose services to the internet (Cloudflare Tunnel)
 - [ ] Migrate LUKS unlock to Tang/NBDE (network-bound, requires VPN)
+- [ ] Set up VPN cluster (argonath as entry/exit node — ADR pending)
 
 ## Repository Structure
 
