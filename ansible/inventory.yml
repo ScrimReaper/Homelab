@@ -6,6 +6,8 @@ all:
       ansible_host: "192.168.0.47"
     blueberrypi:
       ansible_host: "192.168.0.42"
+    argonath:
+      ansible_host: "89.127.233.64"
   children:
     crypto:
       hosts:
