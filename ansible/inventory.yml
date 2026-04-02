@@ -22,13 +22,15 @@ all:
           hosts:
             cherrypi:
     # Hosts from my local home network
-    static_ip:
+    networking:
       children:
-        network_manager:
-          hosts:
-            jellypi:
-            cherrypi:
-            blueberrypi:
+        static_ip:
+          children:
+            network_manager:
+              hosts:
+                jellypi:
+                cherrypi:
+                blueberrypi:
   # Required Vars
   vars:
     ansible_port: 22
