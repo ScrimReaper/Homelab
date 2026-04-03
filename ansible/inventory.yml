@@ -31,6 +31,10 @@ all:
                 jellypi:
                 cherrypi:
                 blueberrypi:
+    pihole:
+      hosts:
+        blueberrypi:
+
   # Required Vars
   vars:
     ansible_port: 22
