@@ -1,0 +1,35 @@
+---
+- name: Create pi directory
+  ansible.builtin.file:
+    state: directory
+    path: /etc/pihole
+    mode: "0644"
+
+- name: Make sure config file exists
+  ansible.builtin.template:
+    src: pihole.toml.j2
+    dest: /etc/pihole/pihole.toml
+    mode: "0644"
+  notify: Restart pihole-FTL
+
+- name: Check if Pi-hole is installed
+  ansible.builtin.command:
+    argv:
+      - pihole
+      - "--version"
+  register: pi_version
+  changed_when: false
+  failed_when: false
+
+- name: Install Pihole
+  ansible.builtin.shell:
+    cmd: "curl -L https://install.pi-hole.net | bash /dev/stdin --unattended" # noqa: command-instead-of-module
+  when: pi_version.rc != 0
+  changed_when: pi_version.rc != 0
+
+- name: Update pihole
+  ansible.builtin.command:
+    cmd: "pihole -up"
+  register: pihole_update
+  notify: Restart pihole-FTL
+  changed_when: "'Everything is up to date' not in pihole_update.stdout"
