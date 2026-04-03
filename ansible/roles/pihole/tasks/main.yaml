@@ -23,7 +23,7 @@
 
 - name: Install Pihole
   ansible.builtin.shell:
-    cmd: "curl -L https://install.pi-hole.net | bash /dev/stdin --unattended" # noqa: command-instead-of-module
+    cmd: "curl -L https://install.pi-hole.net | bash /dev/stdin --unattended" # noqa: command-instead-of-module risky-shell-pipe
   when: pi_version.rc != 0
   changed_when: pi_version.rc != 0
 
@@ -33,3 +33,8 @@
   register: pihole_update
   notify: Restart pihole-FTL
   changed_when: "'Everything is up to date' not in pihole_update.stdout"
+
+- name: Update gravity (may as well always run it)
+  ansible.builtin.command:
+    cmd: pihole -g
+  changed_when: true
