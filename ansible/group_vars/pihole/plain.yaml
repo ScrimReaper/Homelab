@@ -1,0 +1,10 @@
+pihole_dhcp_hosts:
+  - mac: "2C:CF:67:AB:9A:C0"
+    ip: "192.168.0.17"
+    hostname: "jellypi"
+  - mac: "2C:CF:67:81:BC:FB"
+    ip: "192.168.0.47"
+    hostname: "cherrypi"
+  - mac: "04:7c:16:cd:b4:73"
+    ip: "192.168.0.27"
+    hostname: "archlinux"
