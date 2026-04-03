@@ -120,3 +120,13 @@ kubectl delete pv <pv-name>
 flux get kustomizations
 ```
 If `READY: True`, bootstrap succeeded and the timeout message can be ignored.
+
+---
+
+## Pi-hole v6 ignores toml values for DHCP/DNS config after first start
+
+**Symptom:** DHCP range, gateway, upstream DNS servers, or other settings in `pihole.toml` are reset to defaults on startup. Logs show `Resetting X to default (not forced anymore)`.
+
+**Cause:** Pi-hole v6 has two sources of truth — `pihole.toml` and its internal database (`pihole-FTL.db`). Once the database is initialized (on first start), it takes precedence over the toml for most settings.
+
+**Fix:** Configure these settings via the web UI (Settings → DNS / DHCP) — it writes directly to the database. The toml is still respected for settings that haven't been touched via the UI.
