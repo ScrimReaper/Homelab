@@ -1,0 +1,7 @@
+- name: Install and Setup pihole
+  hosts: pihole
+  become: true
+  roles:
+  - pihole
+
+
