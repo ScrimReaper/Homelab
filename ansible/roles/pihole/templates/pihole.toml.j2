@@ -652,7 +652,7 @@
   #     "[<hwaddr>][,id:<client_id>|*][,set:<tag>][,tag:<tag>][,<ipaddr>][,<hostname>][,<lease_time>][,ignore]"
   hosts = [
   {% for host in pihole_dhcp_hosts %}
-    "dhcp-host={{ host.mac }},{{ host.ip }},{{ host.hostname }}"{% if not loop.last %},{% endif %}
+    "{{ host.mac }},{{ host.ip }},{{ host.hostname }}"{% if not loop.last %},{% endif %}
 
   {% endfor %}
   ]
