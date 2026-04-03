@@ -1,7 +1,7 @@
 # ADR-007 — Move Pi-hole to Dedicated Hardware Outside the Cluster
 
 **Date:** 2026-03-31
-**Status:** Decided
+**Status:** Implemented
 
 ## Context
 
