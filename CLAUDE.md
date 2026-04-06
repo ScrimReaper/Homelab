@@ -24,17 +24,18 @@ Mo's homelab — a k3s cluster on Raspberry Pis with self-hosted services.
 
 - [x] Set up k3s cluster (Pi 5 as server, Pi 4 as agent)
 - [ ] Migrate Jellyfin into cluster
-- [x] Migrate Pi-hole to blueberrypi (dedicated hardware, see ADR-007)
+- [x] Migrate Pi-hole to blueberrypi (dedicated hardware, see ADR-008)
 - [ ] Migrate Immich into cluster (needs storage strategy for 1TB photo library)
 - [ ] Deploy torrenting stack (qBittorrent, Sonarr, Radarr, Prowlarr)
+- [x] Set up VPN (Headscale on argonath, Tailscale on jellypi + cherrypi)
 - [ ] Expose services to the internet
 
 ## Architecture Decisions
 
-- **Internet exposure strategy**: Tailscale + self-hosted Headscale on argonath — see ADR-007
-- **VPN cluster**: argonath (VPS on 1984 Hosting) runs Headscale as the control plane — see ADR-007
+- **Internet exposure strategy**: Tailscale + self-hosted Headscale on argonath — see ADR-008
+- **VPN cluster**: argonath (VPS on 1984 Hosting) runs Headscale as the control plane — see ADR-008
 - **Storage**: Immich migration requires a plan for the 1TB photo library currently on main PC
-- **LUKS unlock**: vault passphrase for now; migrate to Tang/NBDE once a VPN is set up between nodes
+- **LUKS unlock**: vault passphrase for now; VPN is in place so Tang/NBDE migration is unblocked
 - **UFW**: opt-in via the `ufw` inventory group — only hosts in that group get UFW applied (currently: argonath). k3s nodes are on a private LAN and services are exposed via cluster-internal mechanisms, so host-level firewalling adds complexity without benefit.
 
 ## Goals (Infrastructure)
@@ -45,6 +46,7 @@ Mo's homelab — a k3s cluster on Raspberry Pis with self-hosted services.
 - [x] Deploy Pi-hole (DNS + DHCP on blueberrypi)
 - [x] Configure static IPs for cluster nodes via Ansible (jellypi, cherrypi, blueberrypi)
 - [ ] Set up NFS shared storage from jellypi's 1TB SSD — local-path PVCs are node-bound and painful to manage
+- [x] Set up VPN — Headscale on argonath, Tailscale on jellypi + cherrypi
 - [ ] Expose Traefik externally via Cloudflare Tunnel
 
 ## Known Issues / Tech Debt
