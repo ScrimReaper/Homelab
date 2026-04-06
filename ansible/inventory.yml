@@ -23,7 +23,8 @@ all:
             cherrypi:
     # Hosts that get included in ufw config
     ufw:
-      argonath:
+      hosts:
+        argonath:
     # Hosts from my local home network
     networking:
       children:
