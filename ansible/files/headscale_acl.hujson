@@ -1,0 +1,10 @@
+// Homelab tailnet ACL — allow all nodes to reach all other nodes.
+{
+  "acls": [
+    {
+      "action": "accept",
+      "src": ["*"],
+      "dst": ["*:*"]
+    }
+  ]
+}
