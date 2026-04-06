@@ -31,11 +31,11 @@ Mo's homelab — a k3s cluster on Raspberry Pis with self-hosted services.
 
 ## Architecture Decisions
 
-- **Internet exposure strategy**: TBD (candidates: Cloudflare Tunnel, Tailscale, port forwarding + DDNS)
-- **VPN cluster**: argonath (VPS on 1984 Hosting) will serve as the entry/exit node — ADR pending
+- **Internet exposure strategy**: Tailscale + self-hosted Headscale on argonath — see ADR-007
+- **VPN cluster**: argonath (VPS on 1984 Hosting) runs Headscale as the control plane — see ADR-007
 - **Storage**: Immich migration requires a plan for the 1TB photo library currently on main PC
 - **LUKS unlock**: vault passphrase for now; migrate to Tang/NBDE once a VPN is set up between nodes
-- **UFW on k3s nodes**: UFW is intentionally skipped on k3s nodes — the `common` role gates the UFW block with `when: inventory_hostname not in groups['k3s_cluster']`. k3s nodes are on a private LAN and services are exposed via Cluster-internal mechanisms, so host-level firewalling adds complexity without benefit.
+- **UFW**: opt-in via the `ufw` inventory group — only hosts in that group get UFW applied (currently: argonath). k3s nodes are on a private LAN and services are exposed via cluster-internal mechanisms, so host-level firewalling adds complexity without benefit.
 
 ## Goals (Infrastructure)
 

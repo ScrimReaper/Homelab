@@ -1,0 +1,22 @@
+- name: install UFW
+  ansible.builtin.package:
+    name: ufw
+    state: present
+    update_cache: true
+
+- name: Configure ufw
+  community.general.ufw:
+    rule: allow
+    name: OpenSSH
+
+- name: Allow extra ports via ufw_enable
+  community.general.ufw:
+    rule: allow
+    port: "{{ item.port | string }}"
+    proto: "{{ item.proto }}"
+  loop: "{{ open_ports | default([]) }}"
+
+- name: UFW - Enable and deny by default
+  community.general.ufw:
+    state: enabled
+    default: deny

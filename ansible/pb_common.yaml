@@ -4,3 +4,9 @@
   roles:
     - common
 
+- name: Apply Firewall config
+  hosts: ufw
+  become: true
+  roles:
+    - common.ufw
+
