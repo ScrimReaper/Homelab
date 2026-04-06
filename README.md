@@ -37,6 +37,8 @@ Personal homelab running a k3s cluster on Raspberry Pis.
 - [ ] Migrate Immich into cluster (needs storage strategy for 1TB photo library)
 - [ ] Set up NFS shared storage from jellypi's SSD
 - [ ] Expose services to the internet (Cloudflare Tunnel)
+- [ ] Deploy Memos (note-taking)
+- [ ] Deploy Ghost (self-hosting journey blog)
 - [x] Set up VPN (Headscale on argonath, Tailscale on jellypi + cherrypi — see ADR-008)
 - [ ] Migrate LUKS unlock to Tang/NBDE (VPN is in place, now unblocked)
 
