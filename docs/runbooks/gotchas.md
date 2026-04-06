@@ -130,3 +130,24 @@ If `READY: True`, bootstrap succeeded and the timeout message can be ignored.
 **Cause:** Pi-hole v6 has two sources of truth — `pihole.toml` and its internal database (`pihole-FTL.db`). Once the database is initialized (on first start), it takes precedence over the toml for most settings.
 
 **Fix:** Configure these settings via the web UI (Settings → DNS / DHCP) — it writes directly to the database. The toml is still respected for settings that haven't been touched via the UI.
+
+---
+
+## Ansible `authorized_key` with `exclusive: true` locks out all other keys
+
+**Symptom:** SSH access denied after running an Ansible bootstrap playbook, even though your key was in `pubkeys`.
+
+**Cause:** `ansible.posix.authorized_key` with `exclusive: true` **rewrites** the `authorized_keys` file on every loop iteration, not appends. So if you loop over multiple keys, each iteration replaces the file with only that one key. The last key in the loop wins — all others are gone.
+
+**Fix:** Don't loop — pass all keys in a single task. Join them into one string first:
+
+```yaml
+- name: Set up authorized keys for ansible
+  ansible.posix.authorized_key:
+    user: "{{ automation_user }}"
+    key: "{{ pubkeys | authorized_builder(pubkey_directory) }}"
+    state: present
+    exclusive: true
+```
+
+**Recovery:** If you have multiple keys in `pubkeys`, one of them survived (the last one looped over). SSH in from the machine that key belongs to, then re-run the fixed playbook.
