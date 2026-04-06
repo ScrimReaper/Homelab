@@ -1,5 +1,5 @@
 ---
-headscale_version: "0.29.0"
+headscale_version: "0.28.0"
 headscale_os: "linux"
 headscale_arch: "amd64"
 headscale_user_name: "headscale"
@@ -16,6 +16,7 @@ headscale_directories:
   - "{{ headscale_config_dir }}"
   - "{{ headscale_var_data_dir }}"
   - "{{ headscale_pid_dir }}"
+  - "{{ headscale_config.tls_letsencrypt_cache_dir }}"
 
 headscale_acl_file: "headscale_acl.hujson"
 headscale_users:
@@ -39,8 +40,7 @@ headscale_config:
   # Address to listen to / bind to on the server
   #
   # For production:
-  # listen_addr: 0.0.0.0:8080
-  listen_addr: 0.0.0.0:8080
+  listen_addr: 0.0.0.0:443
 
   # Address to listen to /metrics and /debug, you may want
   # to keep this endpoint private to your internal network
