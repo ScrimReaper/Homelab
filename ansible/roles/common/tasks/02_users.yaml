@@ -40,7 +40,7 @@
 - name: Realize Authorized Keys for users
   ansible.posix.authorized_key:
     user: "{{ item.name }}"
-    key: "{{ item['keys'] | map('regex_replace', '^(.*)$', pubkey_directory + '\\1') | authorized_builder }}"
+    key: "{{ item['keys'] | authorized_builder(pubkey_directory) }}"
     state: present
     exclusive: true
   loop: "{{ common_users | default([]) }}"
