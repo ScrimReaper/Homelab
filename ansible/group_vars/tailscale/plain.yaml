@@ -2,3 +2,4 @@
 state: latest
 tailscale_up_skip: false
 tailscale_args: "--login-server {{ headscale_url }}"
+tailscale_authkey: "{{ headscale_auth_key }}" # from vault
