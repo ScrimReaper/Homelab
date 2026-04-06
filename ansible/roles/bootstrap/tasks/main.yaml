@@ -17,7 +17,7 @@
 - name: Set up authorized keys for ansible
   ansible.posix.authorized_key:
     user: "{{ automation_user }}"
-    key: "{{ pubkeys | map('regex_replace', '^(.*)$', pubkey_directory + '\\1') | authorized_builder }}"
+    key: "{{ pubkeys | authorized_builder(pubkey_directory) }}"
     state: present
     exclusive: true
 

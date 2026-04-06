@@ -2,39 +2,34 @@
 
 from pathlib import Path
 from typing import List
-import warnings 
-
+import warnings
 from cryptography.hazmat.primitives.serialization import load_ssh_public_key
+from cryptography.utils import CryptographyDeprecationWarning
 
 
 class FilterModule(object):
     def filters(self):
-        return {
-            'authorized_builder': self.authorized_builder
-        }
+        return {"authorized_builder": self.authorized_builder}
 
-    def authorized_builder(self, keys: List[str]) -> str:
-        """
-        receives a list of relative paths to public ssh keys
-        and returns a string containing all of them
-        """
-        key_paths: List[Path] = [Path(p) for p in keys]
-
-        # todo: security
-        # ignore deprecated DSA keys (for now)
-        warnings.filterwarnings(action='ignore')
-
+    def authorized_builder(self, keys: List[str], base_dir: str = "") -> str:
         key_contents = []
-        for kp in key_paths:
+        for key in keys:
+            kp = Path(base_dir) / key if base_dir else Path(key)
             if not kp.exists():
-                raise FileNotFoundError(f"couldn't load ssh pub key: {kp}")
+                raise FileNotFoundError(f"SSH public key not found: {kp}")
 
-            with kp.open("r") as kf:
-                c: str = kf.read().strip()
+            c = kp.read_text(encoding="utf-8").strip().replace("\r\n", "\n")
 
-                # just passing the pub key through pyca/cryptography
-                # for input validation
-                load_ssh_public_key(c.encode())
-                key_contents.append(c)
+            # todo: security
+            with warnings.catch_warnings():
+                warnings.filterwarnings(
+                    "ignore", category=CryptographyDeprecationWarning
+                )
+                try:
+                    load_ssh_public_key(c.encode())
+                except Exception as e:
+                    raise ValueError(f"Invalid SSH public key '{kp}': {e}") from e
+
+            key_contents.append(c)
 
         return "\n".join(key_contents)
