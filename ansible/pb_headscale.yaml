@@ -1,0 +1,5 @@
+- name: Install and setup headscale
+  hosts: headscale
+  become: true
+  roles:
+    - kazauwa.headscale
