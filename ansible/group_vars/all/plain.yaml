@@ -2,6 +2,7 @@ pubkey_directory: "pub_keys/"
 
 pubkeys:
   - mo@homelab_arch.pub
+  - mo@homelab_nix.pub
 
 common_set_ssh_root_login: "no"
 common_disable_ssh_password_authentication: true
@@ -19,3 +20,4 @@ common_users:
       - sudo
     keys:
       - mo@homelab_arch.pub
+      - mo@homelab_nix.pub
