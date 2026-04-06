@@ -37,41 +37,15 @@
   loop_control:
     label: "{{ item.name }}"
 
-# authorized_key with exclusive: true removes any keys not in our list.
-# To avoid subelements iterating one key at a time (which would wipe the previous
-# key on each iteration), we first read all key files individually (subelements gives
-# us one [user, keyfile] pair per iteration, so lookup gets a single string path),
-# accumulate into a dict of {username: [key_contents]}, then join and apply in one shot.
-- name: Read public key files
-  ansible.builtin.set_fact:
-    _pubkey_contents: >-
-      {{ _pubkey_contents | default({}) | combine({
-        item.0.name: (_pubkey_contents | default({}))[item.0.name] | default([]) + [lookup('file', pubkey_directory + item.1)]
-      }) }}
-  loop: "{{ common_users | default([]) | subelements('keys') }}"
-  loop_control:
-    label: "{{ item.0.name }}/{{ item.1 }}"
-
-- name: Build authorized keys per user
-  ansible.builtin.set_fact:
-    user_authorized_keys: >-
-      {{ user_authorized_keys | default({}) | combine({
-        item.name: _pubkey_contents[item.name] | join('\n')
-      }) }}
-  loop: "{{ common_users | default([]) }}"
-  loop_control:
-    label: "{{ item.name }}"
-
 - name: Realize Authorized Keys for users
   ansible.posix.authorized_key:
     user: "{{ item.name }}"
-    key: "{{ user_authorized_keys[item.name] }}"
+    key: "{{ item['keys'] | map('regex_replace', '^(.*)$', pubkey_directory + '\\1') | authorized_builder }}"
     state: present
     exclusive: true
   loop: "{{ common_users | default([]) }}"
   loop_control:
     label: "{{ item.name }}"
-  when: not ansible_check_mode
 
 - name: Set Primary Group of Homedirs (in case gids changed)
   ansible.builtin.file:

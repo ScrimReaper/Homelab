@@ -17,10 +17,9 @@
 - name: Set up authorized keys for ansible
   ansible.posix.authorized_key:
     user: "{{ automation_user }}"
-    key: "{{ lookup('file', pubkey_directory + item) }}"
+    key: "{{ pubkeys | map('regex_replace', '^(.*)$', pubkey_directory + '\\1') | authorized_builder }}"
     state: present
     exclusive: true
-  loop: "{{ pubkeys }}"
 
 - name: ensure sudo exists and update cache
   ansible.builtin.package:
