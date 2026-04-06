@@ -23,7 +23,8 @@ Personal homelab running a k3s cluster on Raspberry Pis.
 | Service          | Status                         | Notes                                                            |
 | ---------------- | ------------------------------ | ---------------------------------------------------------------- |
 | Jellyfin         | Running on Pi 5                | To be migrated into cluster                                      |
-| Pi-hole          | Running in cluster on cherrypi | DNS + DHCP, hostNetwork mode                                     |
+| Pi-hole          | Running on blueberrypi         | DNS + DHCP, dedicated hardware (see ADR-007)                     |
+| Headscale        | Running on argonath            | Self-hosted Tailscale control plane (see ADR-008)                |
 | Immich           | Running on main PC             | Migration pending — needs storage strategy for 1TB photo library |
 | Torrenting stack | Planned                        | qBittorrent + Sonarr + Radarr + Prowlarr                         |
 
@@ -36,8 +37,8 @@ Personal homelab running a k3s cluster on Raspberry Pis.
 - [ ] Migrate Immich into cluster (needs storage strategy for 1TB photo library)
 - [ ] Set up NFS shared storage from jellypi's SSD
 - [ ] Expose services to the internet (Cloudflare Tunnel)
-- [ ] Migrate LUKS unlock to Tang/NBDE (network-bound, requires VPN)
-- [ ] Set up VPN cluster (argonath as entry/exit node — ADR pending)
+- [x] Set up VPN (Headscale on argonath, Tailscale on jellypi + cherrypi — see ADR-008)
+- [ ] Migrate LUKS unlock to Tang/NBDE (VPN is in place, now unblocked)
 
 ## Repository Structure
 
@@ -64,10 +65,11 @@ Personal homelab running a k3s cluster on Raspberry Pis.
 - [ADR-005 — Flux repository structure and secret management](docs/adr/005-gitops-structure.md)
 - [ADR-006 — Bare-metal networking and storage strategy](docs/adr/006-networking-storage.md)
 - [ADR-007 — Pihole dedicated hardware](docs/adr/007-pihole-dedicaated-hardware.md)
-- [ADR-008 — VPN and remote access](docs/adr/006-networking-storage.md)
+- [ADR-008 — VPN and remote access](docs/adr/008-vpn-remote-access.md)
 
 ### Runbooks
 
 - [Ansible setup](docs/runbooks/ansible-setup.md)
 - [Flux GitOps setup](docs/runbooks/flux-setup.md)
 - [Gotchas](docs/runbooks/gotchas.md)
+- [Scale network setup (Headscale + Tailscale)](docs/runbooks/scale-network-setup.md)
