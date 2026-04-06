@@ -1,0 +1,3 @@
+---
+state: latest
+tailscale_up_skip: false
