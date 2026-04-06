@@ -37,13 +37,15 @@ all:
     pihole:
       hosts:
         blueberrypi:
-    headscale:
-      hosts:
-        argonath:
-    tailscale:
-      hosts:
-        jellypi:
-        cherrypi:
+    scale_network:
+      children:
+        headscale:
+          hosts:
+            argonath:
+        tailscale:
+          hosts:
+            jellypi:
+            cherrypi:
 
   # Required Vars
   vars:
