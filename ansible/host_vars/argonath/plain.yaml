@@ -1,0 +1,10 @@
+---
+open_ports:
+  - port: 80
+    proto: tcp
+  - port: 443
+    proto: tcp
+  - port: 41641
+    proto: udp
+  - port: 3478
+    proto: udp
