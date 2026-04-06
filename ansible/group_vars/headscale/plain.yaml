@@ -17,8 +17,9 @@ headscale_directories:
   - "{{ headscale_var_data_dir }}"
   - "{{ headscale_pid_dir }}"
 
-headscale_acl_file: ""
-headscale_users: []
+headscale_acl_file: "headscale_acl.hujson"
+headscale_users:
+  - "{{ tailscale_user }}"
 headscale_enable_routes: []
 headscale_exit_nodes: []
 headscale_config:
@@ -33,7 +34,7 @@ headscale_config:
   #
   # https://myheadscale.example.com:443
   #
-  server_url: https://headscale.scrimreaper.dev
+  server_url: "{{ headscale_url }}"
 
   # Address to listen to / bind to on the server
   #
@@ -109,7 +110,7 @@ headscale_config:
     server:
       # If enabled, runs the embedded DERP server and merges it into the rest of the DERP config
       # The Headscale server_url defined above MUST be using https, DERP requires TLS to be in place
-      enabled: false
+      enabled: true
 
       # Region ID to use for the embedded DERP server.
       # The local DERP prevails if the region ID collides with other region ID coming from
@@ -140,8 +141,7 @@ headscale_config:
 
       # For better connection stability (especially when using an Exit-Node and DNS is not working),
       # it is possible to optionally add the public IPv4 and IPv6 address to the Derp-Map using:
-      ipv4: 198.51.100.1
-      ipv6: 2001:db8::1
+      ipv4: "{{ ansible_host }}"
 
     # List of externally available DERP maps encoded in JSON
     urls:
@@ -239,7 +239,7 @@ headscale_config:
   acme_email: "scrimreaperdev@proton.me"
 
   # Domain name to request a TLS certificate for:
-  tls_letsencrypt_hostname: "headscale.scrimreaper.dev"
+  tls_letsencrypt_hostname: "{{ headscale_url | urlsplit('hostname') }}"
 
   # Path to store certificates and metadata needed by
   # letsencrypt
@@ -276,7 +276,7 @@ headscale_config:
     mode: file
     # If the mode is set to "file", the path to a
     # HuJSON file containing ACL policies.
-    path: ""
+    path: "{{ headscale_config_dir }}/acl.hujson"
 
   ## DNS
   #
