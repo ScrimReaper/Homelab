@@ -51,6 +51,9 @@ all:
                 jellypi:
           hosts:
             cherrypi:
+      nfs_servers:
+        hosts:
+          jellypi:
 
   # Required Vars
   vars:
@@ -113,3 +116,6 @@ all:
     #   Containerd can be configured to connect to private registries and use them to pull images as needed by the kubelet.
     #   YAML here will be placed as the content of /etc/rancher/k3s/registries.yaml
     #   See https://docs.k3s.io/installation/private-registry
+
+
+
