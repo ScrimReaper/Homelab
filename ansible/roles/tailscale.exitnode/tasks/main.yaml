@@ -13,6 +13,7 @@
     src: "{{ proton_interface }}.conf.j2"
     dest: /etc/wireguard/{{ proton_interface }}.conf
     mode: "0600"
+  notify: Restart WireGuard tunnel
 
 - name: Enable IPv4 forwarding
   ansible.posix.sysctl:
@@ -27,3 +28,14 @@
     name: wg-quick@{{ proton_interface }}
     enabled: true
     state: started
+
+- name: Ensure WireGuard interface is up
+  ansible.builtin.stat:
+    path: /sys/class/net/{{ proton_interface }}
+  register: wg_iface
+
+- name: Start WireGuard tunnel if interface is missing
+  ansible.builtin.systemd:
+    name: wg-quick@{{ proton_interface }}
+    state: restarted
+  when: not wg_iface.stat.exists
