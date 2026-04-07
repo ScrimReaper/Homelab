@@ -3,3 +3,9 @@
   become: true
   roles:
     - crypto
+
+- name: Configure NFS servers
+  hosts: nfs_servers
+  become: true
+  roles:
+    - nfs

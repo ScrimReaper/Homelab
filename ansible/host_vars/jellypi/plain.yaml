@@ -5,6 +5,7 @@ luks_device:
 connection_name: "netplan-eth0"
 connection_type: "ethernet"
 
-
 nfs_exports:
-  - "{{ luks_device.mount}}"
+  - path: "{{ luks_device.mountpoint }}"
+    exposure: "{{ scale_netmask.v4 }}"
+    options: "rw,sync,no_subtree_check,no_root_squash"
