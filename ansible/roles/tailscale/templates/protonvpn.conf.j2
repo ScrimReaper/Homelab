@@ -1,0 +1,22 @@
+[Interface]
+PrivateKey = {{ proton_private_key }}
+Address = {{ proton_address }}
+# Table = off prevents wg-quick from hijacking the default route.
+# Routing is handled manually via PostUp/PreDown so Tailscale and
+# ProtonVPN can coexist: Tailscale's ip rules (priority 5210-5270)
+# handle tailnet traffic first; everything else falls through to
+# table 200 (ProtonVPN) at priority 6000.
+Table = off
+
+PostUp = ip route add default dev {{ proton_interface }} table 200
+PostUp = ip rule add table 200 priority 6000
+PostUp = iptables -t nat -A POSTROUTING -o {{ proton_interface }} -j MASQUERADE
+PreDown = iptables -t nat -D POSTROUTING -o {{ proton_interface }} -j MASQUERADE
+PreDown = ip rule del table 200 priority 6000
+PreDown = ip route del default dev {{ proton_interface }} table 200
+
+[Peer]
+PublicKey = {{ proton_public_key }}
+AllowedIPs = 0.0.0.0/0, ::/0
+Endpoint = {{ proton_endpoint }}
+PersistentKeepalive = 25

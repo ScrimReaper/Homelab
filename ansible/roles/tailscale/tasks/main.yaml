@@ -1,0 +1,29 @@
+---
+- name: Make sure wireguard and wireguard-tools are installed
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  loop:
+    - wireguard
+    - wireguard-tools
+
+- name: Copy wireguard config
+  ansible.builtin.template:
+    src: "{{ proton_interface }}.conf.j2"
+    dest: /etc/wireguard/{{ proton_interface }}.conf
+    mode: "0600"
+
+- name: Enable IPv4 forwarding
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_forward
+    value: "1"
+    sysctl_set: true
+    state: present
+    reload: true
+
+- name: Enable and start ProtonVPN WireGuard tunnel
+  ansible.builtin.systemd:
+    name: wg-quick@{{ proton_interface }}
+    enabled: true
+    state: started
