@@ -1,4 +1,10 @@
-luks_device_uuid: "bf292469-5933-4494-acb5-36a5e7319d5c"
+luks_device:
+  uuid: "bf292469-5933-4494-acb5-36a5e7319d5c"
+  mountpoint: /media/sandisk
 
 connection_name: "netplan-eth0"
 connection_type: "ethernet"
+
+
+nfs_exports:
+  - "{{ luks_device.mount}}"

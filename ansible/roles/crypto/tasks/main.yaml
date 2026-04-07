@@ -6,13 +6,13 @@
 
 - name: Ensure mountingpoint exists
   ansible.builtin.file:
-    path: /media/sandisk
+    path: "{{ luks_device.mountpoint }}"
     state: directory
     mode: "0755"
 
 - name: Check if luks device exists
   ansible.builtin.stat:
-    path: /dev/disk/by-uuid/{{ luks_device_uuid }}
+    path: /dev/disk/by-uuid/{{ luks_device.uuid }}
   register: luks_device
 
 - name: Configure LUKS
