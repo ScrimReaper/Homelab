@@ -22,7 +22,10 @@ headscale_acl_file: "headscale_acl.hujson"
 headscale_users:
   - "{{ tailscale_user }}"
 headscale_enable_routes: []
-headscale_exit_nodes: []
+# Node IDs are assigned by Headscale — verify with: headscale nodes list
+headscale_exit_nodes:
+  - id: 2
+    comment: "jellypi ProtonVPN exit node"
 headscale_config:
   # headscale will look for a configuration file named `config.yaml` (or `config.json`) in the following order:
   #
