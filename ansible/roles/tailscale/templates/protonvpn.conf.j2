@@ -9,14 +9,14 @@ Address = {{ proton_address }}
 Table = off
 
 PostUp = ip route add default dev {{ proton_interface }} table 200
-PostUp = ip rule add table 200 priority 6000
+PostUp = ip rule add iif tailscale0 table 200 priority 6000
 PostUp = iptables -t nat -A POSTROUTING -o {{ proton_interface }} -j MASQUERADE
 # Kill switch: block exit node traffic from leaking through eth0 if the tunnel drops
 PostUp = iptables -I FORWARD -i tailscale0 ! -o {{ proton_interface }} -j REJECT
 
 PreDown = iptables -D FORWARD -i tailscale0 ! -o {{ proton_interface }} -j REJECT
 PreDown = iptables -t nat -D POSTROUTING -o {{ proton_interface }} -j MASQUERADE
-PreDown = ip rule del table 200 priority 6000
+PreDown = ip rule del iif tailscale0 table 200 priority 6000
 PreDown = ip route del default dev {{ proton_interface }} table 200
 
 [Peer]
