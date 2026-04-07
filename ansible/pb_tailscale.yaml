@@ -33,5 +33,5 @@
   tasks:
     - name: Set ProtonVPN exit node
       ansible.builtin.command:
-        cmd: "tailscale set --exit-node={{ hostvars[groups['exit_node'][0]]['exit_node_ip'] }}"
+        cmd: "tailscale set --exit-node={{ hostvars[groups['exit_node'][0]]['exit_node_ip'] }} --exit-node-allow-lan-access"
       changed_when: false
