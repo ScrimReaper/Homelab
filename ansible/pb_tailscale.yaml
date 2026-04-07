@@ -8,4 +8,4 @@
   hosts: exit_node
   become: true
   roles:
-    - tailscale
+    - tailscale.exitnode
