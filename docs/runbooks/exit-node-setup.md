@@ -105,3 +105,5 @@ Check in order:
 - **Play order matters** — the ProtonVPN role must run after Tailscale is installed. The kill switch PostUp rule references `tailscale0`, which doesn't exist until Tailscale is up.
 
 - **`--exit-node-allow-lan-access` is required for LAN reachability** — without it, client nodes using the exit node lose access to `192.168.0.0/24` because responses are routed through the exit node instead of directly over eth0.
+
+- **This does not route k8s pod traffic through ProtonVPN** — the `iif tailscale0` rule only catches traffic forwarded from the tailnet. Pod traffic originates from Flannel interfaces and bypasses the rule entirely. For pod-level VPN isolation (e.g. the ARR stack), use Gluetun as a sidecar instead. Setting the exit node on cluster nodes is therefore pointless — see `01e514f`.
