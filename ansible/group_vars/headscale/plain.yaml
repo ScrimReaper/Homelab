@@ -308,7 +308,7 @@ headscale_config:
     # `base_domain` must be a FQDN, without the trailing dot.
     # The FQDN of the hosts will be
     # `hostname.base_domain` (e.g., _myhost.example.com_).
-    base_domain: ts.scrimreaper.dev
+    base_domain: "{{ magic_dns_base_domain }}"
 
     # Whether to use the local DNS settings of a node or override the local DNS
     # settings (default) and force the use of Headscale's DNS configuration.
