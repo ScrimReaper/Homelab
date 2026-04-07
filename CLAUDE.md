@@ -28,6 +28,7 @@ Mo's homelab — a k3s cluster on Raspberry Pis with self-hosted services.
 - [ ] Migrate Immich into cluster (needs storage strategy for 1TB photo library)
 - [ ] Deploy torrenting stack (qBittorrent, Sonarr, Radarr, Prowlarr)
 - [x] Set up VPN (Headscale on argonath, Tailscale on jellypi + cherrypi)
+- [x] Set up ProtonVPN exit node (jellypi routes tailnet traffic through ProtonVPN — see ADR-009)
 - [ ] Expose services to the internet
 
 ## Architecture Decisions
@@ -47,6 +48,7 @@ Mo's homelab — a k3s cluster on Raspberry Pis with self-hosted services.
 - [x] Configure static IPs for cluster nodes via Ansible (jellypi, cherrypi, blueberrypi)
 - [ ] Set up NFS shared storage from jellypi's 1TB SSD — local-path PVCs are node-bound and painful to manage
 - [x] Set up VPN — Headscale on argonath, Tailscale on jellypi + cherrypi
+- [x] Set up ProtonVPN exit node on jellypi — see ADR-009 and runbooks/exit-node-setup.md
 - [ ] Expose Traefik externally via Cloudflare Tunnel
 
 ## Known Issues / Tech Debt
