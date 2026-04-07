@@ -44,8 +44,12 @@ all:
           hosts:
             argonath:
         tailscale:
+          children:
+            # Hosts that act as Tailscale exit nodes, routing traffic through ProtonVPN
+            exit_node:
+              hosts:
+                jellypi:
           hosts:
-            jellypi:
             cherrypi:
 
   # Required Vars

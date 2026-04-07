@@ -1,5 +1,11 @@
-- name: Install and setup tailscale
+- name: Install and configure Tailscale
   hosts: tailscale
   become: true
   roles:
     - artis3n.tailscale.machine
+
+- name: Configure exit node with ProtonVPN
+  hosts: exit_node
+  become: true
+  roles:
+    - tailscale
