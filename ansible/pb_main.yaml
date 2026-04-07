@@ -13,9 +13,6 @@
 - name: Include network playbook
   import_playbook: pb_network.yaml
 
-- name: Include crypto playbook
-  import_playbook: pb_crypto.yaml
-
 - name: Include Pihole playbook
   import_playbook: pb_pihole.yaml
 
@@ -24,6 +21,9 @@
 
 - name: Include Tailscale playbook
   import_playbook: pb_tailscale.yaml
+
+- name: Include storage playbook
+  import_playbook: pb_storage.yaml
 
 - name: Include k3s playbook
   import_playbook: pb_k3s.yaml
