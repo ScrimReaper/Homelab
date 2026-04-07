@@ -13,14 +13,14 @@
 - name: Check if luks device exists
   ansible.builtin.stat:
     path: /dev/disk/by-uuid/{{ luks_device.uuid }}
-  register: luks_device
+  register: luks_device_stat
 
 - name: Configure LUKS
-  when: luks_device.stat.exists
+  when: luks_device_stat.stat.exists
   block:
     - name: Open LUKS container
       community.crypto.luks_device:
-        uuid: "{{ luks_device_uuid }}"
+        uuid: "{{ luks_device.uuid }}"
         name: sandisk
         passphrase: "{{ luks_passphrase }}"
         state: opened
