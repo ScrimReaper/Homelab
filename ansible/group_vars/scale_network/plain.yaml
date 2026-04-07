@@ -1,3 +1,4 @@
 ---
 tailscale_user: mo
 headscale_url: https://headscale.scrimreaper.dev
+magic_dns_base_domain: ts.scrimreaper.dev

@@ -75,11 +75,15 @@ all:
       63316266616564623365386565383761303339356634313731313665653362326535353130303664
       31383162353561616164626664656132323239353364386463336564336239623130663765336130
       3530
-    api_endpoint: "{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}"
+    # magic_dns_base_domain is defined in group_vars/scale_network — available here since k3s nodes are in that group via the tailscale child
+    api_endpoint: "{{ groups['server'][0] }}.{{ magic_dns_base_domain }}"
     # Optional vars
     # Disables servicelb, we use MetalLB instead
-    extra_server_args: "--disable servicelb"
-    # extra_agent_args: ""
+    # --flannel-iface tailscale0: pod-to-pod traffic goes through WireGuard (zero trust, ISP can't sniff)
+    # --node-ip: advertise Tailscale IP so the cluster uses tailnet addresses, not LAN IPs
+    # --tls-san: API cert valid for remote kubectl over tailnet
+    extra_server_args: "--disable servicelb --flannel-iface tailscale0 --tls-san {{ api_endpoint }} --node-ip {{ k3s_tailscale_ip }}"
+    extra_agent_args: "--flannel-iface tailscale0 --node-ip {{ k3s_tailscale_ip }}"
     # extra_install_envs: { 'INSTALL_K3S_SKIP_SELINUX_RPM': 'true' }
     # cluster_context: k3s-ansible
     # api_port: 6443
