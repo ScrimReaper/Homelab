@@ -9,29 +9,3 @@
   become: true
   roles:
     - tailscale.exitnode
-
-
-# This setup works well for one exit node, consider using another approach when multiple exit nodes are added
-- name: Gather tailscale IPs of exitnodes
-  hosts: exit_node
-  become: true
-  gather_facts: false
-  tasks:
-    - name: Get Tailscale IPv4 address
-      command: tailscale ip -4
-      register: tailscale_ipv4
-      changed_when: false
-
-    - name: Set Tailscale IP as persistent host fact
-      set_fact:
-        exit_node_ip: "{{ tailscale_ipv4.stdout | trim }}"
-
-- name: Set exit node for all tailscale hosts
-  hosts: tailscale:!exit_node
-  become: true
-
-  tasks:
-    - name: Set ProtonVPN exit node
-      ansible.builtin.command:
-        cmd: "tailscale set --exit-node={{ hostvars[groups['exit_node'][0]]['exit_node_ip'] }} --exit-node-allow-lan-access"
-      changed_when: false
