@@ -51,9 +51,9 @@ all:
                 jellypi:
           hosts:
             cherrypi:
-      nfs_servers:
-        hosts:
-          jellypi:
+    nfs_servers:
+      hosts:
+        jellypi:
 
   # Required Vars
   vars:
@@ -62,6 +62,10 @@ all:
 
     # automation_user exists since ansible_user is instable at bootstrap, should be the same as ansible_user
     automation_user: ansible
+
+    scale_netmask: 
+      v4: 100.64.0.0/10
+      v6: fd7a:115c:a1e0::/48
 
     k3s_version: v1.34.6+k3s1
 
