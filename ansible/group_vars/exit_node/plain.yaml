@@ -2,6 +2,8 @@
 proton_interface: protonvpn
 
 tailscale_args: "--login-server {{ headscale_url }} --advertise-exit-node"
+# Pi-hole acts as the fallback DNS resolver when the VPN tunnel is down
+resolved_fallback_dns: "{{ hostvars['blueberrypi']['pihole_ip'] }}"
 # ProtonVPN credentials are vault-encrypted in vault.yaml:
 # proton_private_key
 # proton_public_key

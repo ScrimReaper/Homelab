@@ -1,11 +1,12 @@
 all:
   hosts:
     jellypi:
-      ansible_host: "192.168.0.17"
+      ansible_host: "jellypi.ts.scrimreaper.dev"
     cherrypi:
       ansible_host: "192.168.0.47"
     blueberrypi:
       ansible_host: "192.168.0.42"
+      pihole_ip: "192.168.0.42"
     argonath:
       ansible_host: "89.127.233.64"
   children:
