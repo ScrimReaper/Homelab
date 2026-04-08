@@ -11,3 +11,5 @@ nfs_exports:
     options: "rw,sync,no_subtree_check,no_root_squash"
     local_mount: /mnt/nfs/media
     mount_opts: "rw,hard,intr,timeo=600,retrans=2,_netdev"
+    group: media
+    gid: 1001

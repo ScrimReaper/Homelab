@@ -11,6 +11,21 @@
     state: started
     enabled: true
 
+- name: Ensure access group exists for each export
+  ansible.builtin.group:
+    name: "{{ item.group }}"
+    gid: "{{ item.gid }}"
+    state: present
+  loop: "{{ nfs_exports }}"
+
+- name: Set ownership and setgid on export paths
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    owner: root
+    group: "{{ item.group }}"
+    mode: "2775"
+  loop: "{{ nfs_exports }}"
+
 - name: Configure NFS exports
   ansible.builtin.template:
     src: exports.j2
