@@ -7,7 +7,7 @@
   loop:
     - wireguard
     - wireguard-tools
-    - resolvectl
+    - systemd-resolved
 
 - name: Copy wireguard config
   ansible.builtin.template:
@@ -23,6 +23,29 @@
     sysctl_set: true
     state: present
     reload: true
+
+- name: Configure systemd-resolved fallback DNS
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/resolved.conf
+    regexp: "^#?FallbackDNS="
+    line: FallbackDNS={{ resolved_fallback_dns }}
+  notify: Restart systemd-resolved
+
+
+- name: Enable and start systemd-resolved
+  ansible.builtin.systemd:
+    name: systemd-resolved
+    enabled: true
+    state: started
+
+# This is usually handled by the package manager,
+# it was added for consistency across different environments
+- name: Point resolv.conf at systemd-resolved stub
+  ansible.builtin.file:
+    src: /run/systemd/resolve/stub-resolv.conf
+    dest: /etc/resolv.conf
+    state: link
+    force: true
 
 - name: Enable and start ProtonVPN WireGuard tunnel
   ansible.builtin.systemd:
