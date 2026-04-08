@@ -9,3 +9,5 @@ nfs_exports:
   - path: "{{ luks_device.mountpoint }}"
     exposure: "{{ scale_netmask.v4 }}"
     options: "rw,sync,no_subtree_check,no_root_squash"
+    local_mount: /mnt/nfs/media
+    mount_opts: "rw,hard,intr,timeo=600,retrans=2,_netdev"

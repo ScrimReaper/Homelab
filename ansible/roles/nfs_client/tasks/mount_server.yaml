@@ -1,0 +1,15 @@
+- name: Create NFS mount points for {{ nfs_server_host }}
+  ansible.builtin.file:
+    path: "{{ item.local_mount }}"
+    state: directory
+    mode: "0755"
+  loop: "{{ hostvars[nfs_server_host]['nfs_exports'] }}"
+
+- name: Mount NFS shares from {{ nfs_server_host }}
+  ansible.posix.mount:
+    src: "{{ nfs_server_host }}.{{ magic_dns_base_domain }}:{{ item.path }}"
+    path: "{{ item.local_mount }}"
+    fstype: nfs
+    opts: "{{ item.mount_opts }}"
+    state: mounted
+  loop: "{{ hostvars[nfs_server_host]['nfs_exports'] }}"
