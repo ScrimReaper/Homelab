@@ -6,6 +6,7 @@ Address = {{ proton_address }}
 # ProtonVPN can coexist: Tailscale's ip rules (priority 5210-5270)
 # handle tailnet traffic first; everything else falls through to
 # table 200 (ProtonVPN) at priority 6000.
+# DNS is also set manually because wg-quick skips DNS config when Table = off.
 Table = off
 
 PostUp = ip route add default dev {{ proton_interface }} table 200
@@ -13,7 +14,10 @@ PostUp = ip rule add iif tailscale0 table 200 priority 6000
 PostUp = iptables -t nat -A POSTROUTING -o {{ proton_interface }} -j MASQUERADE
 # Kill switch: block exit node traffic from leaking through eth0 if the tunnel drops
 PostUp = iptables -I FORWARD -i tailscale0 ! -o {{ proton_interface }} -j REJECT
+PostUp = resolvectl dns {{ proton_interface }} {{ proton_dns }}
+PostUp = resolvectl domain {{ proton_interface }} ~.
 
+PreDown = resolvectl revert {{ proton_interface }}
 PreDown = iptables -D FORWARD -i tailscale0 ! -o {{ proton_interface }} -j REJECT
 PreDown = iptables -t nat -D POSTROUTING -o {{ proton_interface }} -j MASQUERADE
 PreDown = ip rule del iif tailscale0 table 200 priority 6000
