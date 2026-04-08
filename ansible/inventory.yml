@@ -54,6 +54,9 @@ all:
     nfs_servers:
       hosts:
         jellypi:
+    nfs_clients:
+      hosts:
+        cherrypi:
 
   # Required Vars
   vars:
