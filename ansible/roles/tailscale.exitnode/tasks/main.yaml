@@ -1,5 +1,5 @@
 ---
-- name: Make sure wireguard and wireguard-tools are installed
+- name: Make sure required packages are installed
   ansible.builtin.package:
     name: "{{ item }}"
     state: present
@@ -7,6 +7,7 @@
   loop:
     - wireguard
     - wireguard-tools
+    - resolvectl
 
 - name: Copy wireguard config
   ansible.builtin.template:
