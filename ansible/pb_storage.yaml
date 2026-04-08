@@ -8,4 +8,4 @@
   hosts: nfs_servers
   become: true
   roles:
-    - nfs
+    - nfs_server
