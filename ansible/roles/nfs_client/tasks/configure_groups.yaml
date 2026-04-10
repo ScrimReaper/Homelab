@@ -1,0 +1,6 @@
+- name: Ensure access group exists for {{ nfs_server_host }} exports
+  ansible.builtin.group:
+    name: "{{ item.group }}"
+    gid: "{{ item.gid }}"
+    state: present
+  loop: "{{ hostvars[nfs_server_host]['nfs_exports'] }}"
