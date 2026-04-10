@@ -1,16 +1,10 @@
-- name: Ensure access group exists for {{ nfs_server_host }} exports
-  ansible.builtin.group:
-    name: "{{ item.group }}"
-    gid: "{{ item.gid }}"
-    state: present
-  loop: "{{ hostvars[nfs_server_host]['nfs_exports'] }}"
-
 - name: Create NFS mount points for {{ nfs_server_host }}
   ansible.builtin.file:
     path: "{{ item.local_mount }}"
     state: directory
     mode: "0755"
   loop: "{{ hostvars[nfs_server_host]['nfs_exports'] }}"
+  tags: mount
 
 - name: Mount NFS shares from {{ nfs_server_host }}
   ansible.posix.mount:
@@ -20,3 +14,4 @@
     opts: "{{ item.mount_opts }}"
     state: mounted
   loop: "{{ hostvars[nfs_server_host]['nfs_exports'] }}"
+  tags: mount

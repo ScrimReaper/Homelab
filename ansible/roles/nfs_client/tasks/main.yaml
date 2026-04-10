@@ -3,9 +3,18 @@
     name: nfs-common
     state: present
     update_cache: true
+  tags: always
+
+- name: Configure groups for each NFS server
+  ansible.builtin.include_tasks: configure_groups.yaml
+  loop: "{{ groups['nfs_servers'] }}"
+  loop_control:
+    loop_var: nfs_server_host
+  tags: group
 
 - name: Mount shares from each NFS server
   ansible.builtin.include_tasks: mount_server.yaml
   loop: "{{ groups['nfs_servers'] }}"
   loop_control:
     loop_var: nfs_server_host
+  tags: mount

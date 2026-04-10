@@ -3,15 +3,18 @@
   become: true
   roles:
     - crypto
+  tags: always
 
 - name: Configure NFS servers
   hosts: nfs_servers
   become: true
   roles:
     - nfs_server
+  tags: servers
 
 - name: Configure NFS clients
   hosts: nfs_clients
   become: true
   roles:
     - nfs_client
+  tags: clients
