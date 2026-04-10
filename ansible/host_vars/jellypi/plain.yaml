@@ -11,5 +11,18 @@ nfs_exports:
     options: "rw,sync,no_subtree_check,no_root_squash"
     local_mount: /mnt/nfs/media
     mount_opts: "rw,hard,intr,timeo=600,retrans=2,_netdev"
-    group: media
-    gid: 1001
+    group: nfs
+    gid: 1000
+    subdirs:
+      - path: "{{ luks_device.mountpoint }}/media"
+        group: media
+        gid: 1001
+      - path: "{{ luks_device.mountpoint }}/jellyfin"
+        group: jellyfin
+        gid: 1002
+      - path: "{{ luks_device.mountpoint }}/qbittorrent"
+        group: qbit
+        gid: 1003
+      - path: "{{ luks_device.mountpoint }}/database"
+        group: db
+        gid: 1004

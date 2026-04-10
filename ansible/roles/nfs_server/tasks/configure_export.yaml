@@ -1,0 +1,22 @@
+- name: Set Permission on mount
+  ansible.builtin.file:
+    path: "{{ nfs_export.path }}"
+    owner: root
+    group: "{{ nfs_export.group }}"
+    mode: "2775"
+
+- name: Ensure access group exists for subdir
+  ansible.builtin.group:
+    name: "{{ item.group }}"
+    gid: "{{ item.gid }}"
+    state: present
+  loop: "{{ nfs_export.subdirs }}"
+
+- name: Set permissions on subdirs
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    owner: root
+    group: "{{ item.group }}"
+    mode: "2775"
+    state: directory
+  loop: "{{ nfs_export.subdirs }}"

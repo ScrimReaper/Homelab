@@ -19,12 +19,10 @@
   loop: "{{ nfs_exports }}"
 
 - name: Set ownership and setgid on export paths
-  ansible.builtin.file:
-    path: "{{ item.path }}"
-    owner: root
-    group: "{{ item.group }}"
-    mode: "2775"
+  ansible.builtin.include_tasks: configure_export.yaml
   loop: "{{ nfs_exports }}"
+  loop_control:
+    loop_var: nfs_export
 
 - name: Configure NFS exports
   ansible.builtin.template:
