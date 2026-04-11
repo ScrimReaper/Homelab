@@ -11,9 +11,10 @@ tailnet device → tailscale0 (jellypi) → protonvpn (WireGuard) → ProtonVPN 
 ```
 
 Key routing rules on jellypi (set via wg-quick PostUp):
-- `ip rule add iif tailscale0 table 200` — only traffic arriving from `tailscale0` uses table 200 (ProtonVPN). jellypi's own traffic is unaffected.
+- `ip rule add iif tailscale0 to 10.42.0.0/16 table main priority 5999` and `10.43.0.0/16` — carve out the k8s pod and service CIDRs so Tailscale MagicDNS responses headed back to pods use the main table, not ProtonVPN (see gotcha below).
+- `ip rule add iif tailscale0 table 200 priority 6000` — all other traffic arriving from `tailscale0` (i.e. exit-node forwarding) uses table 200 (ProtonVPN). jellypi's own traffic is unaffected.
 - `iptables MASQUERADE` — rewrites source IPs of exit node traffic to jellypi's ProtonVPN address before forwarding
-- `iptables -I FORWARD -i tailscale0 ! -o protonvpn -j REJECT` — kill switch: if the ProtonVPN tunnel drops, exit node traffic is rejected rather than leaking through `eth0`
+- `iptables -I FORWARD -i tailscale0 -o eth0 -j REJECT` — kill switch: if the ProtonVPN tunnel drops, exit node traffic is rejected rather than leaking through `eth0`
 
 ## Initial Deployment
 

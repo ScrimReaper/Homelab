@@ -10,17 +10,27 @@ Address = {{ proton_address }}
 Table = off
 
 PostUp = ip route add default dev {{ proton_interface }} table 200
+# Carve out cluster CIDRs before the exit-node rule so Tailscale MagicDNS responses
+# destined for pods are routed via the main table (cni0) rather than ProtonVPN.
+# Without these, the iif tailscale0 rule below catches returning DNS packets and
+# sends them to protonvpn instead of back to the pod that asked.
+PostUp = ip rule add iif tailscale0 to 10.42.0.0/16 table main priority 5999
+PostUp = ip rule add iif tailscale0 to 10.43.0.0/16 table main priority 5999
 PostUp = ip rule add iif tailscale0 table 200 priority 6000
 PostUp = iptables -t nat -A POSTROUTING -o {{ proton_interface }} -j MASQUERADE
-# Kill switch: block exit node traffic from leaking through eth0 if the tunnel drops
-PostUp = iptables -I FORWARD -i tailscale0 ! -o {{ proton_interface }} -j REJECT
+# Kill switch: block exit node traffic from leaking through eth0 if the tunnel drops.
+# Scoped to eth0 only — the original "! -o protonvpn" was too broad and blocked
+# Tailscale MagicDNS responses being forwarded back to the pod network (tailscale0 → cni0).
+PostUp = iptables -I FORWARD -i tailscale0 -o eth0 -j REJECT
 PostUp = resolvectl dns {{ proton_interface }} {{ proton_dns }}
 PostUp = resolvectl domain {{ proton_interface }} ~.
 
 PreDown = resolvectl revert {{ proton_interface }}
-PreDown = iptables -D FORWARD -i tailscale0 ! -o {{ proton_interface }} -j REJECT
+PreDown = iptables -D FORWARD -i tailscale0 -o eth0 -j REJECT
 PreDown = iptables -t nat -D POSTROUTING -o {{ proton_interface }} -j MASQUERADE
 PreDown = ip rule del iif tailscale0 table 200 priority 6000
+PreDown = ip rule del iif tailscale0 to 10.43.0.0/16 table main priority 5999
+PreDown = ip rule del iif tailscale0 to 10.42.0.0/16 table main priority 5999
 PreDown = ip route del default dev {{ proton_interface }} table 200
 
 [Peer]

@@ -160,3 +160,37 @@ If `READY: True`, bootstrap succeeded and the timeout message can be ignored.
 ```
 
 **Recovery:** If you have multiple keys in `pubkeys`, one of them survived (the last one looped over). SSH in from the machine that key belongs to, then re-run the fixed playbook.
+
+---
+
+## Exit node: `iif tailscale0 table 200` mis-routes Tailscale MagicDNS responses to ProtonVPN
+
+**Symptom:** All pods get `SERVFAIL` from CoreDNS for external names. `tcpdump` shows DNS responses leaving via `protonvpn` instead of `cni0`.
+
+**Cause:** Flannel MASQUERADEs pod DNS queries going to `tailscale0`, so Tailscale sees them as originating from jellypi's own Tailscale IP and answers them. The response re-enters the host via `tailscale0` and hits the `ip rule iif tailscale0 lookup 200` exit-node rule, which routes it to ProtonVPN (table 200's default route) instead of back to the pod via `cni0`.
+
+**Fix:** Add priority-5999 ip rules for the pod and service CIDRs so those destinations use the main table before the exit-node rule at 6000 is evaluated:
+
+```bash
+ip rule add priority 5999 iif tailscale0 to 10.42.0.0/16 table main
+ip rule add priority 5999 iif tailscale0 to 10.43.0.0/16 table main
+```
+
+These are set in `PostUp` in `ansible/roles/tailscale.exitnode/templates/protonvpn.conf.j2` and applied by running `ansible-playbook pb_tailscale.yaml`.
+
+---
+
+## Exit node: kill switch `! -o protonvpn` blocks Tailscale MagicDNS responses to pods
+
+**Symptom:** Same as above — pods get `SERVFAIL`. The two bugs co-exist and compound each other.
+
+**Cause:** The original kill switch rule `iptables -I FORWARD -i tailscale0 ! -o protonvpn -j REJECT` blocked ALL traffic arriving from `tailscale0` unless the outgoing interface was `protonvpn`. This includes MagicDNS responses being forwarded back to the pod network (`tailscale0 → cni0`). Host-level DNS on jellypi itself is unaffected because locally-originated traffic goes through the OUTPUT chain, not FORWARD.
+
+**Fix:** Scope the kill switch to the actual leak path only:
+
+```bash
+iptables -D FORWARD -i tailscale0 ! -o protonvpn -j REJECT --reject-with icmp-port-unreachable
+iptables -I FORWARD -i tailscale0 -o eth0 -j REJECT
+```
+
+The template in `ansible/roles/tailscale.exitnode/templates/protonvpn.conf.j2` is already updated.
