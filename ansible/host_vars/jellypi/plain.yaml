@@ -14,15 +14,9 @@ nfs_exports:
     group: nfs
     gid: 1000
     subdirs:
-      - path: "{{ luks_device.mountpoint }}/media"
-        group: media
-        gid: 1001
-      - path: "{{ luks_device.mountpoint }}/jellyfin"
-        group: jellyfin
-        gid: 1002
-      - path: "{{ luks_device.mountpoint }}/qbittorrent"
-        group: qbit
-        gid: 1003
-      - path: "{{ luks_device.mountpoint }}/database"
-        group: db
-        gid: 1004
+      - path: "{{ luks_device.mountpoint }}/persistent"
+        group: persistent
+        gid: 2000
+      - path: "{{ luks_device.mountpoint }}/temp"
+        group: temp
+        gid: 2001
