@@ -27,7 +27,7 @@ spec:
         - retrans=2
     storageClass:
       name: nfs-temp
-      defaultClass: true
+      defaultClass: false
       reclaimPolicy: Delete
       pathPattern: "${.PVC.namespace}/${.PVC.name}"
       onDelete: delete
