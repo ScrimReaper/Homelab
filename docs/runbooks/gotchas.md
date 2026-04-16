@@ -142,6 +142,27 @@ If `READY: True`, bootstrap succeeded and the timeout message can be ignored.
 
 ---
 
+## cloudflared QUIC fails inside pods due to overlay MTU
+
+**Symptom:** `failed to dial to edge with quic: timeout: no recent network activity` in cloudflared logs. UDP 7844 is reachable from the host but QUIC still times out from inside pods.
+
+**Cause:** k3s is configured with `--flannel-iface tailscale0`, so flannel derives its MTU from tailscale0 (MTU 1280). After VXLAN overhead (50 bytes), pod MTU is 1230. cloudflared's post-quantum QUIC handshake (`X25519MLKEM768`) generates Initial packets larger than this, which are silently dropped.
+
+**Fix:** Force cloudflared to use HTTP/2 instead of QUIC — HTTP/2 is a first-class supported tunnel protocol and unaffected by pod MTU:
+
+```yaml
+command:
+  - cloudflared
+  - tunnel
+  - --protocol
+  - http2
+  - run
+```
+
+**Note:** This only affects the tunnel transport between cloudflared and Cloudflare's edge. End users are unaffected.
+
+---
+
 ## cloudflared QUIC fails due to insufficient UDP receive buffer
 
 **Symptom:** `failed to sufficiently increase receive buffer size (was: 208 kiB, wanted: 7168 kiB, got: 416 kiB)` in cloudflared logs, followed by QUIC connection timeouts.
