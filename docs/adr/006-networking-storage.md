@@ -19,7 +19,7 @@ Installed via kustomize from the upstream manifest (`metallb-native`).
 
 ### Traefik (Ingress Controller)
 
-**Traefik** is deployed via Helm as the cluster ingress controller. Currently `ClusterIP` (internal only) — will be switched to `LoadBalancer` when services are exposed externally via Cloudflare Tunnel.
+**Traefik** is deployed via Helm as the cluster ingress controller. Runs as `ClusterIP` — cloudflared reaches it cluster-internally, so no LoadBalancer service is needed. See [ADR-010](010-public-service-exposure.md) for the public exposure strategy.
 
 Dashboard is enabled with BasicAuth (credentials in a SOPS-encrypted Secret).
 
