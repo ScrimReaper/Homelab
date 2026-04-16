@@ -24,7 +24,6 @@ spec:
                   name: tunnel-token
                   key: token
           command:
-            # Configures tunnel run parameters
             - cloudflared
             - tunnel
             - --no-autoupdate
@@ -32,6 +31,8 @@ spec:
             - info
             - --metrics
             - 0.0.0.0:2000
+            - --protocol
+            - http2
             - run
           livenessProbe:
             httpGet:
@@ -39,6 +40,6 @@ spec:
               # it has an active connection to Cloudflare's network.
               path: /ready
               port: 2000
-            failureThreshold: 1
+            failureThreshold: 3
             initialDelaySeconds: 10
             periodSeconds: 10
