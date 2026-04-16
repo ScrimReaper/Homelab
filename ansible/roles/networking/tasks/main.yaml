@@ -7,7 +7,7 @@
       community.general.nmcli:
         conn_name: "{{ connection_name }}"
         type: "{{ connection_type }}"
-        ip4: "{{ ansible_host }}/24"
+        ip4: "{{ static_ip }}/24"
         gw4: "{{ gateway }}"
         ssid: "{{ connection_ssid | default(omit) }}"
         method4: manual
