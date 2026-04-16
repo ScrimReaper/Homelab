@@ -142,6 +142,24 @@ If `READY: True`, bootstrap succeeded and the timeout message can be ignored.
 
 ---
 
+## cloudflared QUIC fails due to insufficient UDP receive buffer
+
+**Symptom:** `failed to sufficiently increase receive buffer size (was: 208 kiB, wanted: 7168 kiB, got: 416 kiB)` in cloudflared logs, followed by QUIC connection timeouts.
+
+**Cause:** The Linux kernel's default `net.core.rmem_max` (212992 bytes / ~208 kiB) is too low for QUIC. cloudflared tries to increase the buffer at runtime but is capped by the kernel maximum, causing the QUIC handshake to fail under packet load.
+
+**Fix:** Raise `rmem_max` and `wmem_max` on k3s nodes — handled by the `pb_common.yaml` sysctl play targeting `k3s_cluster`. Run:
+
+```bash
+ansible-playbook pb_common.yaml --limit k3s_cluster
+```
+
+Values are persisted to `/etc/sysctl.d/99-k3s.conf` (24 MiB each, well above cloudflared's requirement).
+
+**Reference:** https://stackoverflow.com/questions/75779066/got-failed-to-sufficiently-increase-receive-buffer-size-error-for-cloudflared
+
+---
+
 ## Ansible `authorized_key` with `exclusive: true` locks out all other keys
 
 **Symptom:** SSH access denied after running an Ansible bootstrap playbook, even though your key was in `pubkeys`.
