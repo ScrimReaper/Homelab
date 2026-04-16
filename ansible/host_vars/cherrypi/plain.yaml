@@ -1,2 +1,4 @@
 connection_name: "netplan-eth0"
 connection_type: "ethernet"
+
+static_ip: 192.168.0.47
