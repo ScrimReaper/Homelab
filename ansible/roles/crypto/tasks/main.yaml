@@ -30,4 +30,5 @@
         path: /media/sandisk
         src: /dev/mapper/sandisk
         fstype: ext4
+        boot: false
         state: mounted
