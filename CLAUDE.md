@@ -29,11 +29,12 @@ Mo's homelab — a k3s cluster on Raspberry Pis with self-hosted services.
 - [ ] Deploy torrenting stack (qBittorrent, Sonarr, Radarr, Prowlarr)
 - [x] Set up VPN (Headscale on argonath, Tailscale on jellypi + cherrypi)
 - [x] Set up ProtonVPN exit node (jellypi routes tailnet traffic through ProtonVPN — see ADR-009)
-- [ ] Expose services to the internet
+- [ ] Expose services to the internet (cloudflared deployed — see ADR-010; pending first public service)
 
 ## Architecture Decisions
 
-- **Internet exposure strategy**: Tailscale + self-hosted Headscale on argonath — see ADR-008
+- **Operator access strategy**: Tailscale + self-hosted Headscale on argonath — see ADR-008
+- **Public exposure strategy**: Cloudflare Tunnel (cloudflared → Traefik → Ingress); Pangolin is the long-term self-hosted goal — see ADR-010
 - **VPN cluster**: argonath (VPS on 1984 Hosting) runs Headscale as the control plane — see ADR-008
 - **Storage**: Immich migration requires a plan for the 1TB photo library currently on main PC
 - **LUKS unlock**: vault passphrase for now; VPN is in place so Tang/NBDE migration is unblocked
@@ -52,7 +53,7 @@ Mo's homelab — a k3s cluster on Raspberry Pis with self-hosted services.
 - [ ] Deploy ARR stack (Sonarr, Radarr, Prowlarr)
 - [ ] Deploy qBittorrent behind Gluetun (VPN kill switch)
 - [ ] Set up fail2ban on SSH (argonath is internet-exposed)
-- [ ] Expose Traefik externally via Cloudflare Tunnel
+- [x] Deploy cloudflared tunnel — Traefik exposed via Cloudflare Tunnel, routing at Ingress level (see ADR-010)
 
 ## Known Issues / Tech Debt
 
