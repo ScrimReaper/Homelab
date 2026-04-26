@@ -35,6 +35,7 @@ Mo's homelab — a k3s cluster on Raspberry Pis with self-hosted services.
 
 - **Operator access strategy**: Tailscale + self-hosted Headscale on argonath — see ADR-008
 - **Public exposure strategy**: Cloudflare Tunnel (cloudflared → Traefik → Ingress); Pangolin is the long-term self-hosted goal — see ADR-010
+- **Identity / SSO**: Authelia as OIDC provider and Traefik forward-auth gateway; file-based user backend, SQLite session store, Authentik is the documented upgrade path — see ADR-011
 - **VPN cluster**: argonath (VPS on 1984 Hosting) runs Headscale as the control plane — see ADR-008
 - **Storage**: Immich migration requires a plan for the 1TB photo library currently on main PC
 - **LUKS unlock**: vault passphrase for now; VPN is in place so Tang/NBDE migration is unblocked
@@ -54,6 +55,7 @@ Mo's homelab — a k3s cluster on Raspberry Pis with self-hosted services.
 - [ ] Deploy qBittorrent behind Gluetun (VPN kill switch)
 - [ ] Set up fail2ban on SSH (argonath is internet-exposed)
 - [x] Deploy cloudflared tunnel — Traefik exposed via Cloudflare Tunnel, routing at Ingress level (see ADR-010)
+- [ ] Deploy Authelia — OIDC provider + Traefik forward-auth, replaces dashboard basic-auth as first integration (see ADR-011)
 
 ## Known Issues / Tech Debt
 
