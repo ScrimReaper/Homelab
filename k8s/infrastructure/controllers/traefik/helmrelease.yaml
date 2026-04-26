@@ -17,6 +17,9 @@ spec:
   values:
     service:
       type: ClusterIP
+    providers:
+      kubernetesCRD:
+        allowCrossNamespace: true
     api:
       dashboard: true
       insecure: false
