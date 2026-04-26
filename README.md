@@ -37,6 +37,7 @@ Personal homelab running a k3s cluster on Raspberry Pis.
 - [ ] Migrate Immich into cluster (needs storage strategy for 1TB photo library)
 - [ ] Set up NFS shared storage from jellypi's SSD
 - [ ] Expose services to the internet (cloudflared deployed — see ADR-010; pending first public service)
+- [ ] Deploy Authelia (OIDC provider + forward-auth — see ADR-011)
 - [ ] Deploy Memos (note-taking)
 - [ ] Deploy Ghost (self-hosting journey blog)
 - [x] Set up VPN (Headscale on argonath, Tailscale on jellypi + cherrypi — see ADR-008)
@@ -70,6 +71,7 @@ Personal homelab running a k3s cluster on Raspberry Pis.
 - [ADR-008 — VPN and remote access](docs/adr/008-vpn-remote-access.md)
 - [ADR-009 — k3s over Tailscale and exit node strategy](docs/adr/009-k3s-tailscale-exit-node.md)
 - [ADR-010 — Public service exposure via Cloudflare Tunnel](docs/adr/010-public-service-exposure.md)
+- [ADR-011 — Authelia as OIDC provider and forward-auth](docs/adr/011-authelia-oidc.md)
 
 ### Runbooks
 
