@@ -1,0 +1,29 @@
+# TEMPLATE — fill in users + argon2 password hashes, then encrypt with:
+#   sops -e -i k8s/infrastructure/controllers/authelia/users-database.yaml
+# Generate password hashes via:
+#   docker run --rm authelia/authelia:latest \
+#     authelia crypto hash generate argon2 --password '<your password>'
+# Once encrypted, uncomment the entry in this directory's kustomization.yaml.
+apiVersion: v1
+kind: Secret
+metadata:
+    name: authelia-users-database
+    namespace: authelia
+type: Opaque
+stringData:
+    users_database.yml: ENC[AES256_GCM,data:JdTB+w1pxRvlk/6vmkyvcjUd21sHDUj1OWWxk7EdF+ZKgxSks3fJuftAmjztSPujeM2z7i+nu0EzsJ214MXNeZMzBtb9vsOT6eDONzOEN5Y/BKMPJ0+yMjwMODdr29EsHvC19B8tCGSbxK6gTg9jcG28x2hjXRjGglFxqPvXPX/WbmTprkqevvErDBo8+d2gDCgqIDvqUcBTCockO1i5OcbWF3ZyUZHPWXy933W8ZiTlENsKMeZPSe52sbTMXfAAOjpwVIi7gO/g/Zw1vU8mdns1Kf9oBOfS/zoebAtt6LzmWk5kWc8f1ynS9Rl6+zLrL3wnrLleEloLoiXqivvRkqvSWwPUITCqDbYWcbqonA9k3f9qg7Dgo0UNTaCGbSv+FQY65van/QO1QHPzzuJH4yE8kbRJYOC9IUJWJxK0m0xvv1mrYfZXgoc5aDuXkGfJWceADGw6S+74+zh8wysVtT6FCu/E3bYoL6QUKS7hE6MJFUbMLcGTJcRo8dAlPNDUK0WHb47IZEKEeD2TQ08jAKGzhqAMcKbU4tV2P16Ki+cZymcFW/2vf4AuB64Ezndb5/aPLRFWEQMiiuc93A==,iv:CF5iKxZzJSBWGw/1OTwmAcu3PhOJhDsA8CZGZq9V0UY=,tag:uMBcM9xyYqYZGfigsYOCKg==,type:str]
+sops:
+    age:
+        - recipient: age14utxu3kn6vtq62pljd3xt0klc77pkqdxmuw8y9u5j239xlmjlamsdystyv
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBhMVJRMkVYTWZlcTRyOWF6
+            Z29UcGZla2ZKK1U1MHFWckpXTFNhejBxMkhFCm1VVUNiVi9iWkh0b0tKYUMvclNz
+            bE9Ub2pvdVJ1anoxYmh5aVQwUzJ6VVUKLS0tIHAxV1JoSzdUNCt1L3diLzFCRDlj
+            TWhUb1NpMVg3NE9FdWorTm9YbW9xZ0kKqmzqjoDlIJpuRENYTNCAFVvTMHBxMWb1
+            sXaky8NiKjoWTkUxFUzVzWbqzkPGmXT9Z/94hJEoWd5SBMJBeeHUEg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-04-26T14:38:30Z"
+    mac: ENC[AES256_GCM,data:vsowtA/h+ljo7A3vEpMvz1SxjGSaBbHu3ErZR3eTeVCsl8PLeYpaeFGiWBuFEyUX483+2KgSqYX5T+MEjZPx9kavIG/HCVNTDPWEOsHDj8+roxOrcOviwDCrDCyTkDeMcs2t9Sn6ZlnEdW3Yfgf17yahTJHb/2Y3K/hodJJbrIk=,iv:53FRksOZ0DhpX8gtQ0NrVJxBGOMixeB9AzMRlBKrHn4=,tag:aKpYfswv/z56WkcSowlvQw==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.12.2

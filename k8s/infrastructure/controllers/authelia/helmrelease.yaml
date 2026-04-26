@@ -1,0 +1,121 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: authelia
+  namespace: authelia
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: authelia
+      version: "0.11.4"
+      sourceRef:
+        kind: HelmRepository
+        name: authelia
+        namespace: flux-system
+      interval: 24h
+  values:
+    domain: scrimreaper.dev
+
+    ingress:
+      enabled: false
+
+    pod:
+      kind: Deployment
+      replicas: 1
+      strategy:
+        type: Recreate
+      securityContext:
+        runAsGroup: 2000
+      extraVolumes:
+        - name: users-database
+          secret:
+            secretName: authelia-users-database
+      extraVolumeMounts:
+        - name: users-database
+          mountPath: /config/users_database.yml
+          subPath: users_database.yml
+          readOnly: true
+
+    service:
+      type: ClusterIP
+      port: 80
+
+    persistence:
+      enabled: true
+      storageClass: nfs-persistent
+      size: 1Gi
+
+    configMap:
+      enabled: true
+
+      theme: auto
+
+      log:
+        level: info
+        format: text
+
+      totp:
+        disable: false
+        issuer: scrimreaper.dev
+        algorithm: SHA1
+        digits: 6
+        period: 30
+
+      webauthn:
+        disable: false
+        display_name: Authelia
+        attestation_conveyance_preference: indirect
+        user_verification: preferred
+        timeout: 60s
+
+      identity_validation:
+        reset_password:
+          jwt_lifespan: 5m
+
+      authentication_backend:
+        password_reset:
+          disable: true
+        refresh_interval: 5m
+        file:
+          enabled: true
+          path: /config/users_database.yml
+          password:
+            algorithm: argon2
+
+      access_control:
+        default_policy: two_factor
+        rules:
+          - domain: auth.scrimreaper.dev
+            policy: bypass
+          # Add per-app rules as services come online, e.g.:
+          # - domain: traefik.scrimreaper.dev
+          #   policy: two_factor
+          # - domain: immich.scrimreaper.dev
+          #   policy: one_factor
+
+      session:
+        name: authelia_session
+        same_site: lax
+        expiration: 1h
+        inactivity: 5m
+        remember_me: 1 month
+        cookies:
+          - domain: scrimreaper.dev
+            authelia_url: https://auth.scrimreaper.dev
+            default_redirection_url: https://scrimreaper.dev
+
+      regulation:
+        max_retries: 3
+        find_time: 2m
+        ban_time: 5m
+
+      storage:
+        local:
+          enabled: true
+
+      notifier:
+        disable_startup_check: false
+        filesystem:
+          enabled: true
+          filename: /config/notification.txt
