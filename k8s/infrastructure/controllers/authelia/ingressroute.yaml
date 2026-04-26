@@ -1,0 +1,15 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: authelia
+  namespace: authelia
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`auth.scrimreaper.dev`)
+      services:
+        - kind: Service
+          name: authelia
+          port: 80
