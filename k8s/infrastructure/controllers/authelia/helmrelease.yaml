@@ -15,8 +15,6 @@ spec:
         namespace: flux-system
       interval: 24h
   values:
-    domain: scrimreaper.dev
-
     ingress:
       enabled: false
 
@@ -26,7 +24,8 @@ spec:
       strategy:
         type: Recreate
       securityContext:
-        runAsGroup: 2000
+        container:
+          runAsGroup: 2000
       extraVolumes:
         - name: users-database
           secret:
@@ -47,8 +46,6 @@ spec:
       size: 1Gi
 
     configMap:
-      enabled: true
-
       theme: auto
 
       log:
@@ -66,7 +63,6 @@ spec:
         disable: false
         display_name: Authelia
         attestation_conveyance_preference: indirect
-        user_verification: preferred
         timeout: 60s
 
       identity_validation:
@@ -102,7 +98,7 @@ spec:
         remember_me: 1 month
         cookies:
           - domain: scrimreaper.dev
-            authelia_url: https://auth.scrimreaper.dev
+            subdomain: auth
             default_redirection_url: https://scrimreaper.dev
 
       regulation:
