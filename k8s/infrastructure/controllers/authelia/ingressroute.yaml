@@ -1,4 +1,14 @@
 apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: authelia-https-headers
+  namespace: authelia
+spec:
+  headers:
+    customRequestHeaders:
+      X-Forwarded-Proto: https
+---
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: authelia
@@ -9,6 +19,8 @@ spec:
   routes:
     - kind: Rule
       match: Host(`auth.scrimreaper.dev`)
+      middlewares:
+        - name: authelia-https-headers
       services:
         - kind: Service
           name: authelia
