@@ -33,7 +33,15 @@ Uncomment the `users-database.yaml` line in `k8s/infrastructure/controllers/auth
 
 Append `- authelia` to `k8s/infrastructure/controllers/kustomization.yaml`.
 
-## 5. Configure the Cloudflare Tunnel hostname
+## 5. X-Forwarded-Proto and the Cloudflare Tunnel
+
+Cloudflare Tunnel terminates TLS externally and forwards plain HTTP to Traefik. Traefik therefore sets `X-Forwarded-Proto: http` on requests it proxies to Authelia. Authelia enforces HTTPS for security-sensitive endpoints (2FA enrollment, OIDC flows, session elevation) by checking this header, and will reject those requests with "invalid X-Forwarded-Proto header value 'http'".
+
+The current workaround is the `authelia-https-headers` Middleware in `ingressroute.yaml`, which rewrites the header to `https` before the request reaches Authelia. Any other service behind the tunnel that enforces the same check will need the same middleware attached to its IngressRoute.
+
+**TODO:** This is a per-service band-aid. The right fix is to set `X-Forwarded-Proto: https` globally at the Traefik entrypoint level for all traffic arriving from the Cloudflare Tunnel, so individual services don't have to remember to attach the middleware. Investigate Traefik's `entryPoints.<name>.forwardedHeaders` or a global middleware chain on the `web` entrypoint.
+
+## 6. Configure the Cloudflare Tunnel hostname
 
 In the Cloudflare dashboard (per ADR-010, hostname routing lives there, not in git), add a public hostname mapping:
 
