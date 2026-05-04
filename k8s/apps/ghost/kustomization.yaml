@@ -4,6 +4,7 @@ resources:
   - namespace.yaml
   - ghost-mariadb-credentials.yaml
   - helmrepository.yaml
+  - bitnami-helmrepository.yaml
   - ghost-db-helmrelease.yaml
   - helmrelease.yaml
   - ingressroute.yaml
