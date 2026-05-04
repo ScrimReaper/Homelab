@@ -11,13 +11,13 @@ spec:
       version: "25.0.8"
       sourceRef:
         kind: HelmRepository
-        name: ghost
+        name: bitnami
         namespace: flux-system
       interval: 24h
   values:
     auth:
-      database: bitnami_ghost
-      username: bn_ghost
+      database: ghost
+      username: ghost_user
       existingSecret: ghost-mariadb-credentials
 
     primary:
