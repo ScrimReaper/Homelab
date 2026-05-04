@@ -7,7 +7,7 @@ spec:
     interval: 30m
     chart:
         spec:
-            chart: ghost
+            chart: ghost-on-kubernetes
             version: v6.36.0
             sourceRef:
                 kind: HelmRepository
