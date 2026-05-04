@@ -14,12 +14,9 @@ spec:
                 name: ghost
                 namespace: flux-system
             interval: 24h
-    env:
-      - name: database__connection__password
-        valueFrom:
-          secretKeyRef:
-            name: ghost-mariadb-credentials
-            key: mariadb-password
+    valuesFrom:
+      - kind: Secret
+        name: ghost-mariadb-credentials
 
     values:
         image:
@@ -39,10 +36,8 @@ spec:
             enabled: false
             external:
                 host: ghost-db
-                user: ghost_user
+                username: ghost_user
                 database: ghost
-                password: password
-                existingSecret: ghost-mariadb-credentials
         persistence:
             ghost:
                 storageClassName: nfs-persistent
