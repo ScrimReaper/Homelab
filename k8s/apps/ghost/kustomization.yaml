@@ -3,7 +3,8 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - ghost-credentials.yaml
-  - ghost-mysql-credentials.yaml
+  - ghost-mariadb-credentials.yaml
   - helmrepository.yaml
+  - ghost-db-helmrelease.yaml
   - helmrelease.yaml
   - ingressroute.yaml
