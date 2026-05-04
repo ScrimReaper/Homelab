@@ -35,11 +35,11 @@ Personal homelab running a k3s cluster on Raspberry Pis.
 - [x] Deploy MetalLB, Traefik, Pi-hole
 - [ ] Migrate Jellyfin into cluster
 - [ ] Migrate Immich into cluster (needs storage strategy for 1TB photo library)
-- [ ] Set up NFS shared storage from jellypi's SSD
-- [ ] Expose services to the internet (cloudflared deployed — see ADR-010; pending first public service)
-- [ ] Deploy Authelia (OIDC provider + forward-auth — see ADR-011)
+- [x] Set up NFS shared storage from jellypi's SSD
+- [x] Expose services to the internet (cloudflared deployed — see ADR-010; pending first public service)
+- [x] Deploy Authelia (OIDC provider + forward-auth — see ADR-011)
 - [ ] Deploy Memos (note-taking)
-- [ ] Deploy Ghost (self-hosting journey blog)
+- [x] Deploy Ghost (self-hosting journey blog)
 - [x] Set up VPN (Headscale on argonath, Tailscale on jellypi + cherrypi — see ADR-008)
 - [ ] Migrate LUKS unlock to Tang/NBDE (VPN is in place, now unblocked)
 
