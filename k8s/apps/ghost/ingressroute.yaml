@@ -1,3 +1,5 @@
+# TODO: add forwardauth-authelia + authelia-https-headers middlewares once Ghost admin
+# protection via Authelia is desired (see ADR-011 for middleware names and namespaces)
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
