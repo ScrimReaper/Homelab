@@ -15,8 +15,34 @@ spec:
         namespace: flux-system
       interval: 24h
   values:
-    persistence:
-      storageclass: nfs-persistent
+    ghostHost: scrimreaper.dev
+    ghostBlogTitle: Mo's Blog
+    ghostUsername: mo
+    ghostEmail: scrimreaperdev@proton.me
+    existingSecret: ghost-credentials
+
     containerSecurityContext:
       runAsGroup: 2000
+
+    service:
+      type: ClusterIP
+      port: 80
+
+    ingress:
+      enabled: false
+
+    persistence:
+      enabled: true
+      storageClass: nfs-persistent
+
+    mysql:
+      enabled: true
+      auth:
+        existingSecret: ghost-mariadb-credentials
+      primary:
+        containerSecurityContext:
+          runAsGroup: 2000
+        persistence:
+          enabled: true
+          storageClass: nfs-persistent
 
