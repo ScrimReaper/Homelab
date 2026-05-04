@@ -36,13 +36,12 @@ spec:
       storageClass: nfs-persistent
 
     mysql:
-      enabled: true
-      auth:
-        existingSecret: ghost-mariadb-credentials
-      primary:
-        containerSecurityContext:
-          runAsGroup: 2000
-        persistence:
-          enabled: true
-          storageClass: nfs-persistent
+      enabled: false
+
+    externalDatabase:
+      host: ghost-db-mariadb
+      port: 3306
+      user: bn_ghost
+      database: bitnami_ghost
+      existingSecret: ghost-mariadb-credentials
 
