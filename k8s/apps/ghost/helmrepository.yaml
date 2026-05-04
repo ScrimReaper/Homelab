@@ -4,6 +4,5 @@ metadata:
   name: ghost
   namespace: flux-system
 spec:
-  type: oci
   interval: 24h
-  url: oci://registry-1.docker.io/bitnamicharts
+  url: https://sredevopsorg.github.io/ghost-on-kubernetes
