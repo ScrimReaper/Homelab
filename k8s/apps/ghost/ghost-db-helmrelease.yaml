@@ -16,8 +16,8 @@ spec:
       interval: 24h
   values:
     auth:
-      database: bitnami_ghost
-      username: bn_ghost
+      database: ghost
+      username: ghost_user
       existingSecret: ghost-mariadb-credentials
 
     primary:
