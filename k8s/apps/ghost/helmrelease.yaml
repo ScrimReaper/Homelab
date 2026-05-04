@@ -33,7 +33,7 @@ spec:
         mysql:
             enabled: false
             external:
-                host: ghost-db
+                host: ghost-db-mariadb
                 username: ghost_user
                 database: ghost
         persistence:
