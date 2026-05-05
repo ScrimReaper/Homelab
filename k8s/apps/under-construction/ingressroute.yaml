@@ -1,0 +1,15 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: under-construction
+  namespace: under-construction
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`git.scrimreaper.dev`)
+      services:
+        - kind: Service
+          name: under-construction
+          port: 80

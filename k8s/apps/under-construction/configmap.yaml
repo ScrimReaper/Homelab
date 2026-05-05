@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: under-construction-html
+  namespace: under-construction
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <body>
+    <p>Stop pointing your healthchecks at my page (looking at you chinese guy)</p>
+    </body>
+    </html>
