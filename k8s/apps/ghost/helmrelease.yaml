@@ -24,7 +24,15 @@ spec:
       url: https://scrimreaper.dev
       adminUrl: https://scrimreaper.dev
       mail:
-        enabled: false
+        enabled: true
+        transport: "SMTP"
+        from: "ghost@mg.scrimreaper.dev"
+        service: "Mailgun"
+        host: "smtp.eu.mailgun.org"
+        port: 465
+        secure: true
+        user: "ghost@mg.scrimreaper.dev"
+
       livenessProbe:
         enabled: true
       readinessProbe:
@@ -49,4 +57,4 @@ spec:
         size: 5Gi
 
     ingress:
-      enabled: false
+      enabled: false 
