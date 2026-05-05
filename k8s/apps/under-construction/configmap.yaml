@@ -29,12 +29,12 @@ data:
           background: var(--bg);
           color: var(--text);
           font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-          font-size: 14px;
+          font-size: clamp(12px, 2vw, 14px);
           min-height: 100vh;
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 2rem;
+          padding: 1rem;
         }
 
         .terminal {
@@ -43,7 +43,6 @@ data:
           background: var(--surface);
           border: 1px solid var(--border);
           border-radius: 8px;
-          overflow: hidden;
           box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
         }
 
@@ -53,6 +52,7 @@ data:
           display: flex;
           align-items: center;
           gap: 0.5rem;
+          border-radius: 7px 7px 0 0;
         }
 
         .dot {
@@ -69,8 +69,9 @@ data:
         }
 
         .body {
-          padding: 1.5rem 1.75rem 2rem;
+          padding: 1.25rem 1.25rem 1.75rem;
           line-height: 1.7;
+          overflow-x: auto;
         }
 
         .prompt {
@@ -92,8 +93,9 @@ data:
 
         .output th, .output td {
           text-align: left;
-          padding-right: 2rem;
+          padding-right: clamp(0.75rem, 3vw, 2rem);
           font-weight: normal;
+          white-space: nowrap;
         }
 
         .output th {
