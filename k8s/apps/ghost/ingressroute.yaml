@@ -11,6 +11,9 @@ spec:
   routes:
     - kind: Rule
       match: Host(`scrimreaper.dev`)
+      middlewares:
+        - name: authelia-https-headers
+          namespace: authelia
       services:
         - kind: Service
           name: ghost-ghost-on-kubernetes-service
