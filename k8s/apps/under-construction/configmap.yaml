@@ -1,0 +1,181 @@
+# DISCLAIMER: This HTML is fully vibecoded. Just didnt want to leave in the 404 for my pending pages
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: under-construction-html
+  namespace: under-construction
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Under Construction</title>
+      <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+          --bg: #0d1117;
+          --surface: #161b22;
+          --border: #30363d;
+          --text: #e6edf3;
+          --muted: #7d8590;
+          --accent: #58a6ff;
+          --green: #3fb950;
+        }
+
+        body {
+          background: var(--bg);
+          color: var(--text);
+          font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+          font-size: clamp(12px, 2vw, 14px);
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1rem;
+        }
+
+        .terminal {
+          width: 100%;
+          max-width: 640px;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 8px;
+          box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
+        }
+
+        .titlebar {
+          background: var(--border);
+          padding: 0.6rem 1rem;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          border-radius: 7px 7px 0 0;
+        }
+
+        .dot {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background: #6e7681;
+        }
+
+        .hostname {
+          margin-left: auto;
+          color: var(--muted);
+          font-size: 12px;
+        }
+
+        .body {
+          padding: 1.25rem 1.25rem 1.75rem;
+          line-height: 1.7;
+          overflow-x: auto;
+        }
+
+        .prompt {
+          color: var(--green);
+        }
+
+        .cmd {
+          color: var(--accent);
+        }
+
+        .output {
+          color: var(--muted);
+          margin: 0.25rem 0 1rem 0;
+        }
+
+        .output table {
+          border-collapse: collapse;
+        }
+
+        .output th, .output td {
+          text-align: left;
+          padding-right: clamp(0.75rem, 3vw, 2rem);
+          font-weight: normal;
+          white-space: nowrap;
+        }
+
+        .output th {
+          color: var(--text);
+        }
+
+        .status {
+          color: var(--text);
+          margin: 0.5rem 0;
+        }
+
+        .status span {
+          color: var(--accent);
+        }
+
+        .blink {
+          display: inline-block;
+          width: 8px;
+          height: 1em;
+          background: var(--text);
+          vertical-align: text-bottom;
+          animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+          0%, 100% { opacity: 1; }
+          50%       { opacity: 0; }
+        }
+
+        .divider {
+          border: none;
+          border-top: 1px solid var(--border);
+          margin: 1.25rem 0;
+        }
+
+        .footer {
+          color: var(--muted);
+          font-size: 12px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="terminal">
+        <div class="titlebar">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <span class="hostname">mo@jellypi:~</span>
+        </div>
+        <div class="body">
+          <div><span class="prompt">$</span> <span class="cmd">kubectl get service --namespace pending</span></div>
+          <div class="output">
+            <table>
+              <tr><th>NAME</th><th>TYPE</th><th>CLUSTER-IP</th><th>EXTERNAL-IP</th><th>PORT(S)</th><th>AGE</th></tr>
+              <tr><td>forgejo</td><td>ClusterIP</td><td>&lt;none&gt;</td><td>&lt;none&gt;</td><td>80/TCP</td><td>--</td></tr>
+            </table>
+          </div>
+
+          <div><span class="prompt">$</span> <span class="cmd">kubectl get deployment --namespace pending</span></div>
+          <div class="output">
+            <table>
+              <tr><th>NAME</th><th>READY</th><th>UP-TO-DATE</th><th>AVAILABLE</th><th>AGE</th></tr>
+              <tr><td>forgejo</td><td>0/1</td><td>0</td><td>0</td><td>--</td></tr>
+            </table>
+          </div>
+
+          <div class="status">
+            <span class="prompt">$</span> <span class="cmd">echo $STATUS</span>
+          </div>
+          <div class="status">
+            This service is not set up yet. Check back later. <span class="blink"></span>
+          </div>
+
+          <hr class="divider">
+
+          <div class="footer">
+            Something broken or urgent? The admin knows about it.<br>
+            This page is intentional, not a misconfiguration.
+          </div>
+        </div>
+      </div>
+    </body>
+    </html>
