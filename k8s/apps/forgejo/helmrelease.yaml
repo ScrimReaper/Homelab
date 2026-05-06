@@ -17,9 +17,6 @@ spec:
     image:
       tag: 15.0.1
     gitea:
-      additionalConfigSources:
-        - secret:
-            secretName: forgejo-db-secret
       admin:
         existingSecret: forgejo-admin-secret
 
@@ -29,7 +26,19 @@ spec:
           existingSecret: forgejo-oauth-secret
           autoDiscoverUrl: https://auth.scrimreaper.dev/.well-known/openid-configuration
 
+      additionalConfigFromEnvs:
+        - name: FORGEJO__DATABASE__PASSWD
+          valueFrom:
+            secretKeyRef:
+              name: forgejo-db-secret
+              key: PASSWD
+
       config:
+        database:
+          DB_TYPE: postgres
+          HOST: forgejo-postgresql:5432
+          NAME: forgejo
+          USER: forgejo
         server:
           DOMAIN: git.scrimreaper.dev
           ROOT_URL: https://git.scrimreaper.dev
