@@ -9,3 +9,4 @@ resources:
   - forgejo-oauth-secret.yaml
   - forgejo-admin-secret.yaml
   - forgejo-db-secret.yaml
+  - ingressroute.yaml
