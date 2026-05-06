@@ -13,13 +13,11 @@ spec:
         kind: HelmRepository
         name: forgejo
         namespace: flux-system
-  valuesFrom:
-    - kind: Secret
-      name: forgejo-db-secret
-      valuesKey: postgresql-password
-      targetPath: postgresql.auth.password
   values:
     gitea:
+      additionalConfigSources:
+        - secret:
+            secretName: forgejo-db-secret
       admin:
         existingSecret: forgejo-admin-secret
 
@@ -37,16 +35,6 @@ spec:
           SSH_PORT: 22
           SSH_LISTEN_PORT: 2222
 
-    postgresql:
-      enabled: true
-      auth:
-        username: forgejo
-        database: forgejo
-      primary:
-        persistence:
-          enabled: true
-          storageClass: nfs-persistent
-          size: 5Gi
 
     persistence:
       enabled: true
