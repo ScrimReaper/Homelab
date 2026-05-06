@@ -5,6 +5,9 @@ metadata:
   namespace: forgejo
 spec:
   interval: 30m
+  dependsOn:
+    - name: forgejo-postgresql
+      namespace: forgejo
   chart:
     spec:
       chart: forgejo
