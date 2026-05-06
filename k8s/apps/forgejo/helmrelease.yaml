@@ -22,6 +22,12 @@ spec:
     gitea:
       admin:
         existingSecret: forgejo-admin-secret
+
+      oauth:
+        - name: "Authelia"
+          provider: openidConnect
+          existingSecret: forgejo-oauth-secret
+          autoDiscoverUrl: https://auth.scrimreaper.dev/.well-known/openid-configuration
         
       config:
         server:
