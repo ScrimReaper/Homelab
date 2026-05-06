@@ -67,7 +67,7 @@ spec:
               client_name: Forgejo
               client_secret: $argon2id$v=19$m=65536,t=3,p=4$qWmOohar817cxJLqv1pNMg$GnGNDwoO9m8y3JPErhfYV9vPsk2JPq1OajCNqKqP5eQ
               redirect_uris:
-                - https://git.scrimreaper.dev/user/oauth2/authelia/callback
+                - https://git.scrimreaper.dev/user/oauth2/Authelia/callback
               scopes:
                 - openid
                 - profile
