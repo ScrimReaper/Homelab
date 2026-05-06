@@ -27,10 +27,17 @@ spec:
         container:
           runAsGroup: 2000
       extraVolumes:
+        - name: oidc-jwks-pk
+          secret:
+            secretName: authelia-oidc-jwks
         - name: users-database
           secret:
             secretName: authelia-users-database
       extraVolumeMounts:
+        - name: oidc-jwks-pk
+          mountPath: /secrets/oidc-jwks.pem
+          subPath: rsa.4096.pem
+          readOnly: true
         - name: users-database
           mountPath: /config/users_database.yml
           subPath: users_database.yml
@@ -46,6 +53,27 @@ spec:
       size: 1Gi
 
     configMap:
+      identity_providers:
+        oidc:
+          enabled: true
+          jwks:
+            - key_id: "primary"
+              algorithm: "RS256"
+              use: "sig"
+              key:
+                path: "/secrets/oidc-jwks.pem"
+          clients:
+            - client_id: forgejo
+              client_name: Forgejo
+              client_secret: $argon2id$v=19$m=65536,t=3,p=4$qWmOohar817cxJLqv1pNMg$GnGNDwoO9m8y3JPErhfYV9vPsk2JPq1OajCNqKqP5eQ
+              redirect_uris:
+                - https://git.scrimreaper.dev/user/oauth2/Authelia/callback
+              scopes:
+                - openid
+                - profile
+                - email
+                - groups
+
       theme: auto
 
       log:

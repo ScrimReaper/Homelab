@@ -3,8 +3,10 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - helmrepository.yaml
+  - bitnami-helmrepository.yaml
   - helmrelease.yaml
-  - middleware.yaml
+  - postgresql-helmrelease.yaml
+  - forgejo-oauth-secret.yaml
+  - forgejo-admin-secret.yaml
+  - forgejo-db-secret.yaml
   - ingressroute.yaml
-  - users-database.yaml
-  - oidc-jwks-secret.yaml
