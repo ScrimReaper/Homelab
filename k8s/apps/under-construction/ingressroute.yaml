@@ -8,7 +8,7 @@ spec:
     - web
   routes:
     - kind: Rule
-      match: Host(`git.scrimreaper.dev`)
+      match: Host(`under-construction.scrimreaper.dev`)
       services:
         - kind: Service
           name: under-construction
