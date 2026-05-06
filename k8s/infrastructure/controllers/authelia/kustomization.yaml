@@ -7,3 +7,4 @@ resources:
   - middleware.yaml
   - ingressroute.yaml
   - users-database.yaml
+  - oidc-jwks-secret.yaml
