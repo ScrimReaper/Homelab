@@ -20,6 +20,9 @@ spec:
       targetPath: postgresql.auth.password
   values:
     gitea:
+      admin:
+        existingSecret: forgejo-admin-secret
+        
       config:
         server:
           DOMAIN: git.scrimreaper.dev
