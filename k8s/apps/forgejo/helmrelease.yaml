@@ -42,6 +42,8 @@ spec:
           HOST: forgejo-postgresql:5432
           NAME: forgejo
           USER: forgejo
+        service:
+          DISABLE_REGISTRATION: true
         server:
           DOMAIN: git.scrimreaper.dev
           ROOT_URL: https://git.scrimreaper.dev
