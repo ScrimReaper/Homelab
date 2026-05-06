@@ -14,6 +14,8 @@ spec:
         name: forgejo
         namespace: flux-system
   values:
+    image:
+      tag: 15.0.1
     gitea:
       additionalConfigSources:
         - secret:
@@ -26,7 +28,7 @@ spec:
           provider: openidConnect
           existingSecret: forgejo-oauth-secret
           autoDiscoverUrl: https://auth.scrimreaper.dev/.well-known/openid-configuration
-        
+
       config:
         server:
           DOMAIN: git.scrimreaper.dev
@@ -35,20 +37,12 @@ spec:
           SSH_PORT: 22
           SSH_LISTEN_PORT: 2222
 
+    containerSecurityContext:
+      runAsGroup: 2000
 
     persistence:
       enabled: true
       storageClass: nfs-persistent
       size: 10Gi
       accessModes:
-        - ReadWriteOnce
-
-    ingress:
-      enabled: true
-      className: traefik
-      hosts:
-        - host: git.scrimreaper.dev
-          paths:
-            - path: /
-              pathType: Prefix
-      # tls: add when Cloudflare Tunnel is in place
+        - ReadWriteMany
