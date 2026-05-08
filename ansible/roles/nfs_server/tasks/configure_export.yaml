@@ -17,6 +17,6 @@
     path: "{{ item.path }}"
     owner: root
     group: "{{ item.group }}"
-    mode: "2775"
+    mode: "2770"
     state: directory
   loop: "{{ nfs_export.subdirs }}"
