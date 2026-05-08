@@ -74,6 +74,17 @@ spec:
                 - email
                 - groups
 
+            - client_id: wakapi
+              client_name: Wakapi
+              client_secret: $argon2id$v=19$m=65536,t=3,p=4$KjUjO7CWiB6LE7PUsB3tGQ$l8bAh4VJK1NXp/oZ0VeXV4U7dxv6cQ9xKP3tsYg14fI
+              redirect_uris:
+                - https://waka.scrimreaper.dev/user/oauth2/Authelia/callback
+              scopes:
+                - openid
+                - profile
+                - email
+                - groups
+
       theme: auto
 
       log:
