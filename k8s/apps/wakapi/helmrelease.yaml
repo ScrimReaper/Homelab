@@ -35,6 +35,7 @@ spec:
     wakapi_config:
       server:
         public_url: https://waka.scrimreaper.dev
+      sentry: {}
       security:
         disable_local_auth: true
         allow_signup: false
