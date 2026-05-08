@@ -19,6 +19,10 @@ spec:
       name: waka-oidc-secret
       valuesKey: client_secret
       targetPath: wakapi_config.security.oidc.client_secret
+    - kind: Secret
+      name: waka-password-salt
+      valuesKey: password_salt
+      targetPath: wakapi_config.security.password_salt
 
   values:
     wakapi_config:
