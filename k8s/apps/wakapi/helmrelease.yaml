@@ -25,6 +25,13 @@ spec:
       targetPath: wakapi_config.security.password_salt
 
   values:
+    podSecurityContext:
+      runAsGroup: 2000
+
+    persistence:
+      storageClass: "nfs-persistent"
+      accessMode: ReadWriteMany
+
     wakapi_config:
       server:
         public_url: https://waka.scrimreaper.dev
