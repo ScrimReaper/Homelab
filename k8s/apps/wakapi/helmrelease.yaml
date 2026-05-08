@@ -14,3 +14,20 @@ spec:
         name: wakapi
         namespace: flux-system
       interval: 24h
+  valuesFrom:
+    - kind: Secret
+      name: waka-oidc-secret
+      valuesKey: client_secret
+      targetPath: wakapi_config.security.oidc.client_secret
+
+  values:
+    wakapi_config:
+      server:
+        public_url: https://waka.scrimreaper.dev
+      security:
+        disable_local_auth: true
+        allow_signup: false
+        oidc:
+          name: Authelia
+          client_id: wakapi
+          endpoint: https://auth.scrimreaper.dev/.well-known/openid-configuration
