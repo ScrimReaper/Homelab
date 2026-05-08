@@ -12,4 +12,4 @@ spec:
       services:
         - kind: Service
           name: wakapi
-          port: 80
+          port: 3000
